@@ -23,3 +23,7 @@ INSERT INTO producto (nombre, descripcion, precio, activo, categoria_id, stock, 
 ('Aspiradora', 'Robótica, WiFi', 899.00, true, 2, 4, NULL),
 ('Pantalón Jeans', 'Corte recto, talla 32', 139.00, true, 3, 22, NULL),
 ('Bicicleta Urbana', 'Aluminio, 7 velocidades', 1699.00, true, 4, 3, NULL);
+
+-- Usuario administrador por defecto
+--INSERT INTO users (nombre, email, password, rol, activo, fecha_creacion)
+--VALUES ('Admin', 'admin@tienda.com', '$2a$10$jbqVYJPXUt8Kl4FyZlu4Te.xEdI135AYpHQB59oCXf4d1B/9ZXD3u', 'SUPER_ADMIN', true, NOW());

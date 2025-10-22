@@ -19,7 +19,9 @@ public class UsersService {
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public Users crear(Users user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (StringUtils.hasText(user.getPassword()) && !isBcryptHash(user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         return usersRepository.save(user);
     }
 
@@ -37,7 +39,9 @@ public class UsersService {
         user.setNombre(userActualizado.getNombre());
         user.setEmail(userActualizado.getEmail());
         if (StringUtils.hasText(userActualizado.getPassword())) {
-            user.setPassword(passwordEncoder.encode(userActualizado.getPassword()));
+            user.setPassword(isBcryptHash(userActualizado.getPassword())
+                    ? userActualizado.getPassword()
+                    : passwordEncoder.encode(userActualizado.getPassword()));
         }
         user.setRol(userActualizado.getRol());
         return usersRepository.save(user);
@@ -51,5 +55,9 @@ public class UsersService {
         Users user = obtenerId(id);
         user.setActivo(activo);
         return usersRepository.save(user);
+    }
+
+    private boolean isBcryptHash(String value) {
+        return value.startsWith("$2a$") || value.startsWith("$2b$") || value.startsWith("$2y$");
     }
 }
