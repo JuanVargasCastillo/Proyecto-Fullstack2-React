@@ -45,6 +45,8 @@ public class ProductoServicesImpl implements ProductoServices{
         existente.setPrecio(productoActualizado.getPrecio());
         existente.setCategoria(productoActualizado.getCategoria());
         existente.setActivo(productoActualizado.getActivo());
+        // Persistir la URL de imagen estable asignada en el controlador
+        existente.setImagenUrl(productoActualizado.getImagenUrl());
         return productoRepositories.save(existente);
     }
 
