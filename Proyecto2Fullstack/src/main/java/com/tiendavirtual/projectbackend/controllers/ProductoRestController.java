@@ -10,12 +10,15 @@ import com.tiendavirtual.projectbackend.entities.Producto;
 import com.tiendavirtual.projectbackend.repositories.ProductoRepositories;
 import com.tiendavirtual.projectbackend.services.ProductoServices;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -27,6 +30,9 @@ public class ProductoRestController {
 
     @Autowired
     private ProductoRepositories productoRepositories;
+
+    @Value("${app.uploads.dir:${user.dir}/uploads}")
+    private String uploadsDir;
 
     @PostMapping
     public ResponseEntity<Producto> crearProducto(@Valid @RequestBody Producto producto) {
@@ -111,19 +117,33 @@ public class ProductoRestController {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
-        // Crear directorio uploads si no existe
-        File uploadsDir = new File("uploads");
-        if (!uploadsDir.exists()) {
-            uploadsDir.mkdirs();
-        }
+        // Crear directorio uploads absoluto si no existe
+        Path uploadPath = Paths.get(uploadsDir).toAbsolutePath();
+        Files.createDirectories(uploadPath);
+
         String original = file.getOriginalFilename();
         String ext = "";
         if (original != null && original.contains(".")) {
             ext = original.substring(original.lastIndexOf('.'));
         }
-        String filename = UUID.randomUUID().toString() + ext;
-        File dest = new File(uploadsDir, filename);
-        file.transferTo(dest);
+
+        // Eliminar cualquier imagen previa del producto (cualquier extensión)
+        String prefix = "producto-" + id + ".";
+        try {
+            Files.list(uploadPath)
+                .filter(p -> p.getFileName().toString().startsWith(prefix))
+                .forEach(p -> {
+                    try { Files.deleteIfExists(p); } catch (IOException ignored) {}
+                });
+        } catch (IOException e) {
+            // Si hay error listando, continuamos para intentar escribir la nueva imagen
+        }
+
+        // Nombre estable basado en el ID del producto y la extensión original
+        String filename = "producto-" + id + (ext != null ? ext : "");
+        Path dest = uploadPath.resolve(filename);
+        file.transferTo(dest.toFile());
+
         producto.setImagenUrl("/uploads/" + filename);
         Producto actualizado = productoServices.actualizar(producto.getId(), producto);
         return ResponseEntity.ok(actualizado);
