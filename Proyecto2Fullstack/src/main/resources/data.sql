@@ -1,28 +1,28 @@
--- Categorías iniciales
-INSERT INTO categoria (nombre) VALUES ('Electrónica');
-INSERT INTO categoria (nombre) VALUES ('Hogar');
-INSERT INTO categoria (nombre) VALUES ('Ropa');
-INSERT INTO categoria (nombre) VALUES ('Deportes');
-INSERT INTO categoria (nombre) VALUES ('Libros');
+-- Categorías de ropa reutilizada
+INSERT INTO categoria (nombre) VALUES ('Poleras');
+INSERT INTO categoria (nombre) VALUES ('Pantalones');
+INSERT INTO categoria (nombre) VALUES ('Chaquetas');
+INSERT INTO categoria (nombre) VALUES ('Vestidos');
+INSERT INTO categoria (nombre) VALUES ('Faldas');
 
--- Productos iniciales (15)
+-- Productos reales (sin imágenes)
 -- Suponiendo IDs de categorías del 1 al 5 según inserción
 INSERT INTO producto (nombre, descripcion, precio, activo, categoria_id, stock, imagen_url) VALUES
-('Smartphone X1', 'Pantalla 6.5" OLED, 128GB', 1299.99, true, 1, 10, NULL),
-('Auriculares Bluetooth', 'Cancelación de ruido, batería 20h', 299.90, true, 1, 25, NULL),
-('Cafetera Automática', 'Depósito 1.5L, 15 bares', 499.00, true, 2, 8, NULL),
-('Licuadora Pro', 'Vaso de vidrio 1.8L, 1200W', 349.90, true, 2, 12, NULL),
-('Camiseta Deportiva', 'Tela transpirable, talla M', 79.99, true, 3, 30, NULL),
-('Chaqueta Impermeable', 'Resistente al agua, talla L', 199.50, true, 3, 5, NULL),
-('Balón de Fútbol', 'Tamaño 5, cosido a mano', 129.00, true, 4, 20, NULL),
-('Mancuernas 10kg', 'Juego de 2, recubrimiento caucho', 249.99, true, 4, 7, NULL),
-('Libro: Java Básico', 'Introducción a Java y OOP', 59.90, true, 5, 50, NULL),
-('Libro: Spring Boot', 'Guía práctica para microservicios', 89.00, true, 5, 18, NULL),
-('Monitor 27"', 'QHD, 144Hz, IPS', 999.00, true, 1, 6, NULL),
-('Teclado Mecánico', 'Switches rojos, retroiluminado', 249.00, true, 1, 15, NULL),
-('Aspiradora', 'Robótica, WiFi', 899.00, true, 2, 4, NULL),
-('Pantalón Jeans', 'Corte recto, talla 32', 139.00, true, 3, 22, NULL),
-('Bicicleta Urbana', 'Aluminio, 7 velocidades', 1699.00, true, 4, 3, NULL);
+('Polera Vintage 90s', 'Algodón, estampado clásico, talla M', 14990.00, true, 1, 12, NULL),
+('Polera Band Tee', 'Polera de banda, talla L, buen estado', 12990.00, true, 1, 8, NULL),
+('Pantalón Denim Clásico', 'Corte recto, talla 32', 19990.00, true, 2, 10, NULL),
+('Pantalón Cargo Retro', 'Color verde oliva, talla 34', 17990.00, true, 2, 6, NULL),
+('Chaqueta Retro Cuero', 'Cuero sintético, talla M', 29990.00, true, 3, 4, NULL),
+('Chaqueta Jean Oversize', 'Estilo 80s, talla XL', 24990.00, true, 3, 5, NULL),
+('Vestido Bohemio', 'Estampado floral, talla S', 18990.00, true, 4, 7, NULL),
+('Vestido Midi Vintage', 'Color vino, talla M', 20990.00, true, 4, 3, NULL),
+('Falda Plisada', 'Color beige, talla M', 15990.00, true, 5, 9, NULL),
+('Falda Denim', 'Talla 38, lavado medio', 16990.00, true, 5, 6, NULL),
+('Polera Básica Reutilizada', '100% algodón, talla S', 9990.00, true, 1, 15, NULL),
+('Pantalón Recto Vintage', 'Talla 30, azul oscuro', 18990.00, true, 2, 8, NULL),
+('Chaqueta Bomber', 'Tela ligera, talla L', 22990.00, true, 3, 5, NULL),
+('Vestido Slip', 'Satinado, talla M', 21990.00, true, 4, 4, NULL),
+('Falda A Línea', 'Color negro, talla S', 14990.00, true, 5, 10, NULL);
 
 -- Usuario administrador por defecto
 INSERT INTO users (nombre, email, password, rol, activo, fecha_creacion)
