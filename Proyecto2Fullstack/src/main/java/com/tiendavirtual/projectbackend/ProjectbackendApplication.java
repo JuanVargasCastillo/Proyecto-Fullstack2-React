@@ -20,6 +20,7 @@ public class ProjectbackendApplication {
         SpringApplication.run(ProjectbackendApplication.class, args);
     }
 
+    /*
     @Bean
     CommandLineRunner initAdmin(UsersRepository usersRepository) {
         return args -> {
@@ -36,4 +37,5 @@ public class ProjectbackendApplication {
             }
         };
     }
+    */
 }
