@@ -2,7 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Navbar from './componentes/Navbar/Navbar'
 import Footer from './componentes/Footer/Footer'
@@ -18,24 +18,26 @@ import { ToastProvider } from './componentes/shared/ToastProvider'
 
 function App() {
   const [count, setCount] = useState(0)
+  const location = useLocation()
+  const isLoginRoute = location.pathname === '/login'
 
   return (
     <AuthProvider>
       <ToastProvider>
         <div className="d-flex flex-column min-vh-100">
-          <Navbar />
+          {!isLoginRoute && <Navbar />}
           <main className="flex-grow-1 container py-4">
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Navigate to="/login" replace />} />
               <Route path="/login" element={<Login />} />
               <Route path="/inventario" element={<ProtectedRoute><Inventario /></ProtectedRoute>} />
               <Route path="/contacto" element={<Contacto />} />
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
               <Route path="/usuarios" element={<ProtectedRoute><Usuarios /></ProtectedRoute>} />
-              <Route path="*" element={<Navigate to="/" replace />} />
+              <Route path="*" element={<Navigate to="/login" replace />} />
             </Routes>
           </main>
-          <Footer />
+          {!isLoginRoute && <Footer />}
         </div>
       </ToastProvider>
     </AuthProvider>
