@@ -3,9 +3,12 @@ package com.tiendavirtual.projectbackend.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+
 public class LoginRequest {
     @NotBlank
     @Email
+    @JsonAlias({"correo","email"})
     private String email;
 
     @NotBlank
