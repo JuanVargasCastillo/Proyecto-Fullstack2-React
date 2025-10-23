@@ -14,6 +14,10 @@ import com.tiendavirtual.projectbackend.repositories.UsersRepository;
 
 import jakarta.validation.Valid;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/auth")
@@ -24,6 +28,12 @@ public class AuthController {
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    @Operation(summary = "Login", description = "Valida credenciales contra la base de datos y retorna información del usuario autenticado.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Autenticación exitosa"),
+        @ApiResponse(responseCode = "401", description = "Credenciales inválidas"),
+        @ApiResponse(responseCode = "403", description = "Usuario inactivo")
+    })
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
         Optional<Users> optUser = usersRepository.findByEmail(request.getEmail());
