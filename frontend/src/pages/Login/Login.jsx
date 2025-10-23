@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
+import axios from 'axios';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -49,13 +50,14 @@ export default function Login() {
     return user?.contrasena ?? user?.password ?? user?.pass ?? '';
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     resetErrors();
 
     const trimmedEmail = email.trim();
     const trimmedPassword = password.trim();
 
+    // Validaciones de campos vacíos (mantener diseño/estructura)
     if (!trimmedEmail || !trimmedPassword) {
       if (!trimmedEmail) setErrorEmail('Por favor ingresa tu correo electrónico.');
       if (!trimmedPassword) setErrorPassword('Por favor ingresa tu contraseña.');
@@ -63,34 +65,30 @@ export default function Login() {
       return;
     }
 
-    const user = findUser(trimmedEmail);
-    if (!user) {
-      setErrorEmail('El correo no está registrado.');
-      setErrorGeneral('El correo no existe.');
-      return;
+    try {
+      const resp = await axios.post('http://localhost:8080/api/auth/login', {
+        correo: trimmedEmail,
+        password: trimmedPassword,
+      }, {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: false,
+      });
+
+      // 200 OK
+      const user = resp?.data || { email: trimmedEmail };
+      localStorage.setItem('usuarioLogueado', JSON.stringify(user));
+      localStorage.setItem('user', JSON.stringify(user));
+
+      // Redireccionar al dashboard
+      window.location.href = '/dashboard';
+      // navigate('/dashboard'); // alternativa SPA si tu AuthContext se actualiza sin recargar
+    } catch (error) {
+      if (error?.response?.status === 401) {
+        setErrorGeneral('Correo o contraseña incorrectos ❌');
+      } else {
+        setErrorGeneral('Error al conectar con el servidor.');
+      }
     }
-
-    const storedPassword = getUserPassword(user);
-    if (String(storedPassword) !== trimmedPassword) {
-      setErrorPassword('Contraseña incorrecta.');
-      setErrorGeneral('Credenciales inválidas.');
-      return;
-    }
-
-    const usuarioLogueado = {
-      email: user?.correo || user?.email || trimmedEmail,
-      nombre: user?.nombre || user?.name || 'Usuario',
-      rol: user?.rol || 'ADMIN',
-    };
-    // Guardar según tu requerimiento
-    localStorage.setItem('usuarioLogueado', JSON.stringify(usuarioLogueado));
-    // También guardar en 'user' para integrarse con AuthContext existente
-    localStorage.setItem('user', JSON.stringify(usuarioLogueado));
-
-    // Forzar recarga para que AuthContext tome el usuario y ProtectedRoute permita /dashboard
-    window.location.href = '/dashboard';
-    // Como alternativa SPA (si no usas ProtectedRoute con AuthContext):
-    // navigate('/dashboard');
   };
 
   return (
