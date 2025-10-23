@@ -11,6 +11,8 @@ import Inventario from './pages/Inventario/Inventario'
 import Contacto from './pages/Contacto/Contacto'
 import Dashboard from './pages/Dashboard/Dashboard'
 import Usuarios from './pages/Usuarios/Usuarios'
+import Login from './pages/Login/Login'
+import ProtectedRoute from './componentes/shared/ProtectedRoute'
 import { AuthProvider } from './context/AuthContext'
 import { ToastProvider } from './componentes/shared/ToastProvider'
 
@@ -25,10 +27,11 @@ function App() {
           <main className="flex-grow-1 container py-4">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/inventario" element={<Inventario />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/inventario" element={<ProtectedRoute><Inventario /></ProtectedRoute>} />
               <Route path="/contacto" element={<Contacto />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/usuarios" element={<Usuarios />} />
+              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              <Route path="/usuarios" element={<ProtectedRoute><Usuarios /></ProtectedRoute>} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </main>
