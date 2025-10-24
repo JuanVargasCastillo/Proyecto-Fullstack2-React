@@ -14,7 +14,8 @@ export default function Usuarios() {
   const [errors, setErrors] = useState({})
   const [isSuperAdmin, setIsSuperAdmin] = useState(false)
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+  // Nuevo regex de dominios permitidos
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|duocuc\.cl|profesor\.duoc\.cl)$/
   const ROLES = ['CLIENTE', 'VENDEDOR', 'SUPER_ADMIN']
 
   const cargar = async () => {
@@ -121,7 +122,7 @@ export default function Usuarios() {
     else if (nombre.length > 60) errs.nombre = 'Máximo 60 caracteres'
 
     if (!email) errs.email = 'El email es obligatorio'
-    else if (!emailRegex.test(email)) errs.email = 'Formato de email inválido'
+    else if (!emailRegex.test(email)) errs.email = 'Solo se permiten correos @gmail.com, @duocuc.cl o @profesor.duoc.cl'
     else if (email.length > 120) errs.email = 'Máximo 120 caracteres'
 
     if (!ROLES.includes(rol)) errs.rol = 'Rol inválido'
@@ -163,6 +164,49 @@ export default function Usuarios() {
     }
   }
 
+  // Validaciones en tiempo real para email y password
+  const setFieldError = (name, message) => {
+    setErrors((prev) => {
+      const next = { ...prev }
+      if (message) next[name] = message
+      else delete next[name]
+      return next
+    })
+  }
+
+  useEffect(() => {
+    if (!showForm) return
+    const email = String(form.email || '').trim()
+    if (!email) {
+      setFieldError('email', 'El email es obligatorio')
+    } else if (!emailRegex.test(email)) {
+      setFieldError('email', 'Solo se permiten correos @gmail.com, @duocuc.cl o @profesor.duoc.cl')
+    } else if (email.length > 120) {
+      setFieldError('email', 'Máximo 120 caracteres')
+    } else {
+      setFieldError('email', null)
+    }
+  }, [form.email, showForm])
+
+  useEffect(() => {
+    if (!showForm) return
+    if (editUser) {
+      // En edición no se valida password ni se muestra
+      setFieldError('password', null)
+      return
+    }
+    const pwd = String(form.password || '')
+    if (!pwd) {
+      setFieldError('password', 'La contraseña es obligatoria')
+    } else if (pwd.length < 6) {
+      setFieldError('password', 'Mínimo 6 caracteres')
+    } else if (pwd.length > 120) {
+      setFieldError('password', 'Máximo 120 caracteres')
+    } else {
+      setFieldError('password', null)
+    }
+  }, [form.password, showForm, editUser])
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
     setForm((f) => ({ ...f, [name]: type === 'checkbox' ? checked : value }))
@@ -174,6 +218,21 @@ export default function Usuarios() {
     if (r === 'VENDEDOR') return 'bg-success'
     return 'bg-secondary'
   }
+
+  // Indicador de fuerza de contraseña
+  const passwordStrength = useMemo(() => {
+    const pwd = String(form.password || '')
+    const hasLetters = /[a-zA-Z]/.test(pwd)
+    const hasNumbers = /\d/.test(pwd)
+    if (!pwd) return { level: 'none', label: '', color: 'transparent', width: '0%' }
+    if (pwd.length < 6) return { level: 'weak', label: 'Débil', color: 'var(--gb-pink)', width: '33%' }
+    if (pwd.length <= 10) return { level: 'medium', label: 'Media', color: 'var(--gb-yellow)', width: '66%' }
+    if (hasLetters && hasNumbers) return { level: 'strong', label: 'Fuerte', color: 'var(--gb-green)', width: '100%' }
+    return { level: 'medium', label: 'Media', color: 'var(--gb-yellow)', width: '66%' }
+  }, [form.password])
+
+  const isEmailValid = !!form.email && emailRegex.test(String(form.email).trim()) && !errors.email
+  const isPasswordValid = !!form.password && String(form.password).length >= 6 && !errors.password
 
   return (
     <div className="container">
@@ -216,7 +275,7 @@ export default function Usuarios() {
                   <input
                     name="email"
                     type="email"
-                    className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                    className={`form-control ${errors.email ? 'is-invalid' : isEmailValid ? 'is-valid' : ''}`}
                     value={form.email}
                     onChange={handleChange}
                   />
@@ -248,10 +307,23 @@ export default function Usuarios() {
                     <input
                       name="password"
                       type="password"
-                      className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                      className={`form-control ${errors.password ? 'is-invalid' : isPasswordValid ? 'is-valid' : ''}`}
                       value={form.password}
                       onChange={handleChange}
                     />
+                    {/* Barra de fuerza y texto */}
+                    {form.password && (
+                      <div className="mt-1" aria-live="polite">
+                        <div style={{ height: 4, backgroundColor: '#e9ecef' }}>
+                          <div style={{ height: 4, width: passwordStrength.width, backgroundColor: passwordStrength.color, transition: 'width 0.2s ease' }} />
+                        </div>
+                        <small style={{ color: passwordStrength.color }}>
+                          {passwordStrength.level === 'weak' && '🔴 Débil'}
+                          {passwordStrength.level === 'medium' && '🟡 Media'}
+                          {passwordStrength.level === 'strong' && '🟢 Fuerte'}
+                        </small>
+                      </div>
+                    )}
                     {errors.password && <div className="invalid-feedback">{errors.password}</div>}
                   </div>
                 )}
