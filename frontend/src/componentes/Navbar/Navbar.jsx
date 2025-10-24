@@ -39,13 +39,7 @@ export default function Navbar() {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <NavLink className="nav-link" to="/">Home</NavLink>
-            </li>
-            <li className="nav-item">
               <NavLink className="nav-link" to="/inventario">Inventario</NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/contacto">Contacto</NavLink>
             </li>
             <li className="nav-item">
               <NavLink className="nav-link" to="/usuarios">Usuarios</NavLink>

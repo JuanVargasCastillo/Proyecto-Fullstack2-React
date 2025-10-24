@@ -14,22 +14,22 @@ export default function Dashboard() {
   }, [])
 
   return (
-    <div className="container">
-      <h4 className="mb-3">Dashboard</h4>
+    <div className="container gb-dashboard">
+      <h4 className="mb-3 gb-dashboard-title">Dashboard</h4>
       <div className="row g-3">
         <div className="col-sm-6">
-          <div className="card text-center">
+          <div className="card text-center gb-card">
             <div className="card-body">
               <h5>Productos</h5>
-              <p className="display-6">{stats.productos}</p>
+              <p className="display-6 gb-metric">{stats.productos}</p>
             </div>
           </div>
         </div>
         <div className="col-sm-6">
-          <div className="card text-center">
+          <div className="card text-center gb-card">
             <div className="card-body">
               <h5>Usuarios</h5>
-              <p className="display-6">{stats.usuarios}</p>
+              <p className="display-6 gb-metric">{stats.usuarios}</p>
             </div>
           </div>
         </div>
