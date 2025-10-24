@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.tiendavirtual.projectbackend.entities.Users;
 import com.tiendavirtual.projectbackend.repositories.UsersRepository;
+import com.tiendavirtual.projectbackend.dto.UserUpdateRequest;
 
 @Service
 public class UsersService {
@@ -34,16 +35,17 @@ public class UsersService {
         return (List<Users>) usersRepository.findAll();
     }
 
-    public Users actualizar(Long id, Users userActualizado) {
+    public Users actualizar(Long id, UserUpdateRequest request) {
         Users user = obtenerId(id);
-        user.setNombre(userActualizado.getNombre());
-        user.setEmail(userActualizado.getEmail());
-        if (StringUtils.hasText(userActualizado.getPassword())) {
-            user.setPassword(isBcryptHash(userActualizado.getPassword())
-                    ? userActualizado.getPassword()
-                    : passwordEncoder.encode(userActualizado.getPassword()));
+        user.setNombre(request.getNombre());
+        user.setEmail(request.getEmail());
+        if (request.getPassword() != null && !request.getPassword().isBlank()) {
+            user.setPassword(isBcryptHash(request.getPassword())
+                    ? request.getPassword()
+                    : passwordEncoder.encode(request.getPassword()));
         }
-        user.setRol(userActualizado.getRol());
+        user.setRol(request.getRol());
+        user.setActivo(request.getActivo());
         return usersRepository.save(user);
     }
 

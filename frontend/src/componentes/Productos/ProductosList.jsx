@@ -1,4 +1,4 @@
-export default function ProductosList({ productos = [], onDelete }) {
+export default function ProductosList({ productos = [], onDelete, canDelete = true }) {
   if (!productos.length) {
     return <p className="text-muted">No hay productos para mostrar.</p>
   }
@@ -23,7 +23,7 @@ export default function ProductosList({ productos = [], onDelete }) {
               </div>
               <div className="mt-2 text-end">
                 {onDelete && (
-                  <button className="btn btn-outline-danger btn-sm" onClick={() => onDelete(p.id)}>Eliminar</button>
+                  <button className="btn btn-outline-danger btn-sm" onClick={() => onDelete(p.id)} disabled={!canDelete}>Eliminar</button>
                 )}
               </div>
             </div>

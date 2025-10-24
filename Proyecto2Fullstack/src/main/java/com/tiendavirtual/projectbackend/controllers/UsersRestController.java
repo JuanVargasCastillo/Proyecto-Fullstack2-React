@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.tiendavirtual.projectbackend.entities.Users;
 import com.tiendavirtual.projectbackend.services.UsersService;
+import com.tiendavirtual.projectbackend.dto.UserUpdateRequest;
 
 import jakarta.validation.Valid;
 
@@ -59,7 +60,7 @@ public class UsersRestController {
         @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Users> actualizarUser(@PathVariable @Parameter(description = "ID del usuario") Long id, @Valid @RequestBody Users userActualizado) {
+    public ResponseEntity<Users> actualizarUser(@PathVariable @Parameter(description = "ID del usuario") Long id, @Valid @RequestBody UserUpdateRequest userActualizado) {
         return ResponseEntity.ok(usersService.actualizar(id, userActualizado));
     }
 
