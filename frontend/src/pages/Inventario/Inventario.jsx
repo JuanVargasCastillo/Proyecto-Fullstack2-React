@@ -9,6 +9,7 @@ export default function Inventario() {
   const [productos, setProductos] = useState([])
   const [bajoStock, setBajoStock] = useState([])
   const [loading, setLoading] = useState(true)
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false)
 
   const cargar = async () => {
     try {
@@ -27,6 +28,10 @@ export default function Inventario() {
   }
 
   const borrar = async (id) => {
+    if (!isSuperAdmin) {
+      show('Acción permitida solo para SUPER_ADMIN', 'warning')
+      return
+    }
     if (!confirm('¿Eliminar producto?')) return
     try {
       await eliminarProducto(id)
@@ -38,6 +43,17 @@ export default function Inventario() {
   }
 
   useEffect(() => { cargar() }, [])
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('user')
+      const usr = raw ? JSON.parse(raw) : null
+      const role = String(usr?.rol ?? usr?.role ?? '').toUpperCase()
+      setIsSuperAdmin(role === 'SUPER_ADMIN')
+    } catch (e) {
+      setIsSuperAdmin(false)
+    }
+  }, [])
 
   return (
     <div className="container">
@@ -52,7 +68,7 @@ export default function Inventario() {
           {loading ? (
             <div className="text-center"><div className="spinner-border" role="status"></div></div>
           ) : (
-            <ProductosList productos={productos} onDelete={borrar} />
+            <ProductosList productos={productos} onDelete={borrar} canDelete={isSuperAdmin} />
           )}
         </div>
         <div className="col-12 col-lg-4">
@@ -74,7 +90,13 @@ export default function Inventario() {
             </div>
           </div>
           <div className="mt-4">
-            <CrearProd />
+            {isSuperAdmin ? (
+              <CrearProd />
+            ) : (
+              <div className="card p-3">
+                <h6 className="text-muted mb-0">Solo SUPER_ADMIN puede crear productos</h6>
+              </div>
+            )}
           </div>
         </div>
       </div>

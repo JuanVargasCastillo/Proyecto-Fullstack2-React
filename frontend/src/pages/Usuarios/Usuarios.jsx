@@ -12,6 +12,7 @@ export default function Usuarios() {
   const [editUser, setEditUser] = useState(null)
   const [form, setForm] = useState({ nombre: '', email: '', rol: 'CLIENTE', activo: true, password: '' })
   const [errors, setErrors] = useState({})
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false)
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
   const ROLES = ['CLIENTE', 'VENDEDOR', 'SUPER_ADMIN']
@@ -30,6 +31,17 @@ export default function Usuarios() {
 
   useEffect(() => { cargar() }, [])
 
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('user')
+      const usr = raw ? JSON.parse(raw) : null
+      const role = String(usr?.rol ?? usr?.role ?? '').toUpperCase()
+      setIsSuperAdmin(role === 'SUPER_ADMIN')
+    } catch (e) {
+      setIsSuperAdmin(false)
+    }
+  }, [])
+
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase()
     if (!q) return usuarios
@@ -40,6 +52,10 @@ export default function Usuarios() {
   }, [search, usuarios])
 
   const toggleEstado = async (u) => {
+    if (!isSuperAdmin) {
+      show('Acción permitida solo para SUPER_ADMIN', 'warning')
+      return
+    }
     try {
       await cambiarEstadoUsuario(u.id, !u.activo)
       show('Estado actualizado', 'success')
@@ -50,6 +66,10 @@ export default function Usuarios() {
   }
 
   const borrar = async (id) => {
+    if (!isSuperAdmin) {
+      show('Acción permitida solo para SUPER_ADMIN', 'warning')
+      return
+    }
     if (!confirm('¿Eliminar usuario?')) return
     try {
       await eliminarUsuario(id)
@@ -61,6 +81,10 @@ export default function Usuarios() {
   }
 
   const abrirCrear = () => {
+    if (!isSuperAdmin) {
+      show('Acción permitida solo para SUPER_ADMIN', 'warning')
+      return
+    }
     setEditUser(null)
     setForm({ nombre: '', email: '', rol: 'CLIENTE', activo: true, password: '' })
     setErrors({})
@@ -68,6 +92,10 @@ export default function Usuarios() {
   }
 
   const abrirEditar = (u) => {
+    if (!isSuperAdmin) {
+      show('Acción permitida solo para SUPER_ADMIN', 'warning')
+      return
+    }
     setEditUser(u)
     setForm({ nombre: u.nombre || '', email: u.email || '', rol: (u.rol || 'CLIENTE').toUpperCase(), activo: !!u.activo, password: '' })
     setErrors({})
@@ -86,6 +114,7 @@ export default function Usuarios() {
     const email = String(form.email || '').trim()
     const rol = String(form.rol || '').trim().toUpperCase()
     const password = String(form.password || '')
+    const isEditing = !!editUser
 
     if (!nombre) errs.nombre = 'El nombre es obligatorio'
     else if (nombre.length < 2) errs.nombre = 'Mínimo 2 caracteres'
@@ -97,7 +126,7 @@ export default function Usuarios() {
 
     if (!ROLES.includes(rol)) errs.rol = 'Rol inválido'
 
-    if (!editUser) {
+    if (!isEditing) {
       if (!password) errs.password = 'La contraseña es obligatoria'
       else if (password.length < 6) errs.password = 'Mínimo 6 caracteres'
       else if (password.length > 120) errs.password = 'Máximo 120 caracteres'
@@ -108,17 +137,21 @@ export default function Usuarios() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (!isSuperAdmin) {
+      show('Acción permitida solo para SUPER_ADMIN', 'warning')
+      return
+    }
     const errs = validar()
     setErrors(errs)
     if (Object.keys(errs).length) return
 
     try {
-      const payload = { nombre: form.nombre.trim(), email: form.email.trim(), rol: form.rol.toUpperCase(), activo: !!form.activo }
+      const basePayload = { nombre: form.nombre.trim(), email: form.email.trim(), rol: form.rol.toUpperCase(), activo: !!form.activo }
       if (editUser) {
-        await actualizarUsuario(editUser.id, payload)
+        await actualizarUsuario(editUser.id, basePayload)
         show('Usuario actualizado', 'success')
       } else {
-        const createPayload = { ...payload, password: form.password }
+        const createPayload = { ...basePayload, password: form.password }
         await crearUsuario(createPayload)
         show('Usuario creado', 'success')
       }
@@ -156,7 +189,7 @@ export default function Usuarios() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
-            <button className="btn btn-success" onClick={abrirCrear}>+ Crear Usuario</button>
+            <button className="btn btn-success" onClick={abrirCrear} disabled={!isSuperAdmin}>+ Crear Usuario</button>
             <button className="btn btn-outline-secondary btn-sm" onClick={cargar} disabled={loading}>
               {loading ? 'Actualizando...' : 'Actualizar'}
             </button>
@@ -224,7 +257,7 @@ export default function Usuarios() {
                 )}
               </div>
               <div className="mt-3 d-flex gap-2">
-                <button className="btn btn-success" type="submit">{editUser ? 'Guardar Cambios' : 'Crear'}</button>
+                <button className="btn btn-success" type="submit" disabled={!isSuperAdmin}>{editUser ? 'Guardar Cambios' : 'Crear'}</button>
                 <button className="btn btn-outline-secondary" type="button" onClick={cancelarForm}>Cancelar</button>
               </div>
             </div>
@@ -256,12 +289,12 @@ export default function Usuarios() {
                   </td>
                   <td>
                     <div className="form-check form-switch">
-                      <input className="form-check-input" type="checkbox" checked={u.activo} onChange={() => toggleEstado(u)} />
+                      <input className="form-check-input" type="checkbox" checked={u.activo} onChange={() => toggleEstado(u)} disabled={!isSuperAdmin} />
                     </div>
                   </td>
                   <td className="text-end d-flex justify-content-end gap-2">
-                    <button className="btn btn-outline-primary btn-sm" onClick={() => abrirEditar(u)}>Editar</button>
-                    <button className="btn btn-outline-danger btn-sm" onClick={() => borrar(u.id)}>Eliminar</button>
+                    <button className="btn btn-outline-primary btn-sm" onClick={() => abrirEditar(u)} disabled={!isSuperAdmin}>Editar</button>
+                    <button className="btn btn-outline-danger btn-sm" onClick={() => borrar(u.id)} disabled={!isSuperAdmin}>Eliminar</button>
                   </td>
                 </tr>
               ))}

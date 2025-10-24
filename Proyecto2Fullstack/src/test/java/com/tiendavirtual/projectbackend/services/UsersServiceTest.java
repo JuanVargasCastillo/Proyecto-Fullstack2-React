@@ -12,6 +12,7 @@ import org.mockito.MockitoAnnotations;
 import com.tiendavirtual.projectbackend.entities.Users;
 import com.tiendavirtual.projectbackend.enums.Rol;
 import com.tiendavirtual.projectbackend.repositories.UsersRepository;
+import com.tiendavirtual.projectbackend.dto.UserUpdateRequest;
 
 public class UsersServiceTest {
 
@@ -58,12 +59,14 @@ public class UsersServiceTest {
         existingUser.setEmail("juan@example.com");
         existingUser.setPassword("$2a$10$existingHashedPassword");
         existingUser.setRol(Rol.CLIENTE);
+        existingUser.setActivo(true);
 
-        Users updateData = new Users();
+        UserUpdateRequest updateData = new UserUpdateRequest();
         updateData.setNombre("Juan Carlos");
         updateData.setEmail("juan.carlos@example.com");
         updateData.setPassword("$2a$10$existingHashedPassword");
         updateData.setRol(Rol.VENDEDOR);
+        updateData.setActivo(true);
 
         when(usersRepository.findById(userId)).thenReturn(java.util.Optional.of(existingUser));
         when(usersRepository.save(any(Users.class))).thenAnswer(invocation -> invocation.getArgument(0));
