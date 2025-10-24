@@ -10,10 +10,11 @@ export default function Usuarios() {
 
   const [showForm, setShowForm] = useState(false)
   const [editUser, setEditUser] = useState(null)
-  const [form, setForm] = useState({ nombre: '', email: '', rol: 'USER', activo: true })
+  const [form, setForm] = useState({ nombre: '', email: '', rol: 'CLIENTE', activo: true, password: '' })
   const [errors, setErrors] = useState({})
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+  const ROLES = ['CLIENTE', 'VENDEDOR', 'SUPER_ADMIN']
 
   const cargar = async () => {
     try {
@@ -61,14 +62,14 @@ export default function Usuarios() {
 
   const abrirCrear = () => {
     setEditUser(null)
-    setForm({ nombre: '', email: '', rol: 'USER', activo: true })
+    setForm({ nombre: '', email: '', rol: 'CLIENTE', activo: true, password: '' })
     setErrors({})
     setShowForm(true)
   }
 
   const abrirEditar = (u) => {
     setEditUser(u)
-    setForm({ nombre: u.nombre || '', email: u.email || '', rol: u.rol || 'USER', activo: !!u.activo })
+    setForm({ nombre: u.nombre || '', email: u.email || '', rol: (u.rol || 'CLIENTE').toUpperCase(), activo: !!u.activo, password: '' })
     setErrors({})
     setShowForm(true)
   }
@@ -84,6 +85,7 @@ export default function Usuarios() {
     const nombre = String(form.nombre || '').trim()
     const email = String(form.email || '').trim()
     const rol = String(form.rol || '').trim().toUpperCase()
+    const password = String(form.password || '')
 
     if (!nombre) errs.nombre = 'El nombre es obligatorio'
     else if (nombre.length < 2) errs.nombre = 'Mínimo 2 caracteres'
@@ -93,7 +95,13 @@ export default function Usuarios() {
     else if (!emailRegex.test(email)) errs.email = 'Formato de email inválido'
     else if (email.length > 120) errs.email = 'Máximo 120 caracteres'
 
-    if (!['ADMIN', 'USER'].includes(rol)) errs.rol = 'Rol inválido'
+    if (!ROLES.includes(rol)) errs.rol = 'Rol inválido'
+
+    if (!editUser) {
+      if (!password) errs.password = 'La contraseña es obligatoria'
+      else if (password.length < 6) errs.password = 'Mínimo 6 caracteres'
+      else if (password.length > 120) errs.password = 'Máximo 120 caracteres'
+    }
 
     return errs
   }
@@ -110,7 +118,8 @@ export default function Usuarios() {
         await actualizarUsuario(editUser.id, payload)
         show('Usuario actualizado', 'success')
       } else {
-        await crearUsuario(payload)
+        const createPayload = { ...payload, password: form.password }
+        await crearUsuario(createPayload)
         show('Usuario creado', 'success')
       }
       setShowForm(false)
@@ -124,6 +133,13 @@ export default function Usuarios() {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
     setForm((f) => ({ ...f, [name]: type === 'checkbox' ? checked : value }))
+  }
+
+  const roleBadge = (rol) => {
+    const r = String(rol || '').toUpperCase()
+    if (r === 'SUPER_ADMIN') return 'bg-primary'
+    if (r === 'VENDEDOR') return 'bg-success'
+    return 'bg-secondary'
   }
 
   return (
@@ -181,8 +197,9 @@ export default function Usuarios() {
                     value={form.rol}
                     onChange={handleChange}
                   >
-                    <option value="USER">Usuario</option>
-                    <option value="ADMIN">Administrador</option>
+                    <option value="CLIENTE">Cliente</option>
+                    <option value="VENDEDOR">Vendedor</option>
+                    <option value="SUPER_ADMIN">Administrador</option>
                   </select>
                   {errors.rol && <div className="invalid-feedback">{errors.rol}</div>}
                 </div>
@@ -192,6 +209,19 @@ export default function Usuarios() {
                     <label className="form-check-label">Activo</label>
                   </div>
                 </div>
+                {!editUser && (
+                  <div className="col-md-4">
+                    <label className="form-label">Contraseña</label>
+                    <input
+                      name="password"
+                      type="password"
+                      className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                      value={form.password}
+                      onChange={handleChange}
+                    />
+                    {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+                  </div>
+                )}
               </div>
               <div className="mt-3 d-flex gap-2">
                 <button className="btn btn-success" type="submit">{editUser ? 'Guardar Cambios' : 'Crear'}</button>
@@ -222,7 +252,7 @@ export default function Usuarios() {
                   <td>{u.nombre}</td>
                   <td>{u.email}</td>
                   <td>
-                    <span className={`badge ${u.rol === 'ADMIN' ? 'bg-primary' : 'bg-secondary'}`}>{u.rol}</span>
+                    <span className={`badge ${roleBadge(u.rol)}`}>{u.rol}</span>
                   </td>
                   <td>
                     <div className="form-check form-switch">
