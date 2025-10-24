@@ -4,13 +4,31 @@ import { Offcanvas } from 'bootstrap'
 export default function AdminSidebar() {
   const navigate = useNavigate()
 
+  const cleanupBackdropAndScroll = () => {
+    document.querySelectorAll('.offcanvas-backdrop, .modal-backdrop').forEach(el => el.remove())
+    document.body.classList.remove('offcanvas-open', 'modal-open')
+    document.body.style.removeProperty('overflow')
+    document.body.style.removeProperty('padding-right')
+    document.body.style.removeProperty('touch-action')
+    document.documentElement.style.removeProperty('overflow')
+  }
+
   const handleNavigate = (path) => {
     navigate(path)
     const menuEl = document.getElementById('menuLateral')
     if (menuEl) {
       const offcanvasInstance = Offcanvas.getInstance(menuEl) || new Offcanvas(menuEl)
+      const onHidden = () => {
+        cleanupBackdropAndScroll()
+        menuEl.removeEventListener('hidden.bs.offcanvas', onHidden)
+      }
+      menuEl.addEventListener('hidden.bs.offcanvas', onHidden)
       offcanvasInstance.hide()
     }
+    // Limpieza inmediata por si la navegación ocurre antes de que termine la transición
+    cleanupBackdropAndScroll()
+    // Fallback tras la duración típica de transición de Bootstrap
+    setTimeout(() => cleanupBackdropAndScroll(), 350)
   }
 
   return (
