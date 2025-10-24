@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { listarProductos, listarProductosBajoStock } from '../../services/productos'
+import { listarProductos, listarProductosBajoStock, eliminarProducto } from '../../services/productos'
 import { useToast } from '../../componentes/shared/ToastProvider'
 import ProductosList from '../../componentes/Productos/ProductosList'
 import CrearProd from '../../componentes/CrearProd/CrearProd'
@@ -26,6 +26,17 @@ export default function Inventario() {
     }
   }
 
+  const borrar = async (id) => {
+    if (!confirm('¿Eliminar producto?')) return
+    try {
+      await eliminarProducto(id)
+      show('Producto eliminado', 'success')
+      await cargar()
+    } catch (err) {
+      show(err.message, 'danger')
+    }
+  }
+
   useEffect(() => { cargar() }, [])
 
   return (
@@ -41,7 +52,7 @@ export default function Inventario() {
           {loading ? (
             <div className="text-center"><div className="spinner-border" role="status"></div></div>
           ) : (
-            <ProductosList productos={productos} />
+            <ProductosList productos={productos} onDelete={borrar} />
           )}
         </div>
         <div className="col-12 col-lg-4">
