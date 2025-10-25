@@ -12,7 +12,6 @@ import com.tiendavirtual.projectbackend.repositories.UsersRepository;
 
 @SpringBootApplication
 public class ProjectbackendApplication {
-
     public static void main(String[] args) {
         // Mostrar hash BCrypt de "123456" al inicio, antes de levantar Spring
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
