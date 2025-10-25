@@ -50,7 +50,7 @@ export default function CrearProd() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="card p-3">
+    <form onSubmit={handleSubmit} className="card p-3 shadow-sm rounded-3">
       <h5 className="mb-3">Crear Producto</h5>
       <div className="row g-3">
         <div className="col-md-6">
@@ -84,7 +84,7 @@ export default function CrearProd() {
         </div>
       </div>
       <div className="mt-3">
-        <button className="btn btn-primary" type="submit" disabled={loading}>{loading ? 'Guardando...' : 'Guardar'}</button>
+        <button className="btn btn-success" type="submit" disabled={loading}>{loading ? 'Guardando...' : 'Crear producto'}</button>
       </div>
     </form>
   )

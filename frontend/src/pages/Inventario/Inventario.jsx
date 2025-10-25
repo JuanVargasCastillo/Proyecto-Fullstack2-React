@@ -16,10 +16,13 @@ export default function Inventario() {
       setLoading(true)
       const [all, low] = await Promise.all([
         listarProductos(),
-        listarProductosBajoStock(3),
+        listarProductosBajoStock(5), // Cambiado a 5 para capturar stock < 5
       ])
       setProductos(all)
-      setBajoStock(low)
+      
+      // Filtrar productos con stock < 5 en el frontend para asegurar consistencia
+      const alertas = all.filter(p => p.stock < 5)
+      setBajoStock(alertas)
     } catch (err) {
       show(err.message, 'danger')
     } finally {
@@ -29,16 +32,16 @@ export default function Inventario() {
 
   const borrar = async (id) => {
     if (!isSuperAdmin) {
-      show('Acción permitida solo para SUPER_ADMIN', 'warning')
+      show('Acción disponible solo para SUPER_ADMIN', 'warning')
       return
     }
     if (!confirm('¿Eliminar producto?')) return
     try {
       await eliminarProducto(id)
-      show('Producto eliminado', 'success')
+      show('Producto eliminado correctamente', 'success')
       await cargar()
     } catch (err) {
-      show(err.message, 'danger')
+      show(err.message || 'Error al eliminar producto', 'danger')
     }
   }
 
@@ -55,37 +58,57 @@ export default function Inventario() {
     }
   }, [])
 
+  const stockBadgeClass = (stock) => {
+    if (stock === 0) return 'badge bg-danger'
+    if (stock < 5) return 'badge bg-warning text-dark'
+    return 'badge bg-success'
+  }
+
+  const stockBadgeText = (stock) => {
+    if (stock === 0) return 'Sin stock'
+    if (stock < 5) return `${stock} ⚠️`
+    return String(stock)
+  }
+
   return (
     <div className="container">
       <div className="row g-4">
         <div className="col-12 col-lg-8">
           <div className="d-flex justify-content-between align-items-center mb-2">
             <h4>Inventario</h4>
-            <button className="btn btn-outline-secondary btn-sm" onClick={cargar} disabled={loading}>
+            <button className="btn btn-success btn-sm" onClick={cargar} disabled={loading} style={{ transition: 'all 0.3s ease' }}>
               {loading ? 'Actualizando...' : 'Actualizar'}
             </button>
           </div>
           {loading ? (
-            <div className="text-center"><div className="spinner-border" role="status"></div></div>
+            <div className="text-center my-4">
+              <div className="spinner-border text-success me-2" role="status"></div>
+              <span className="text-success">Cargando inventario…</span>
+            </div>
           ) : (
             <ProductosList productos={productos} onDelete={borrar} canDelete={isSuperAdmin} />
           )}
         </div>
         <div className="col-12 col-lg-4">
-          <div className="card">
+          <div className="card shadow-sm rounded-3" style={{ transition: 'all 0.3s ease' }}>
             <div className="card-body">
-              <h5>Bajo stock</h5>
+              <h5>Alertas de Stock</h5>
               {bajoStock.length ? (
                 <ul className="list-group list-group-flush">
                   {bajoStock.map((p) => (
-                    <li key={p.id} className="list-group-item d-flex justify-content-between">
+                    <li key={p.id} className="list-group-item d-flex justify-content-between align-items-center" title={p.categoria?.nombre ? `Categoría: ${p.categoria.nombre}` : 'Stock crítico'}>
                       <span>{p.nombre}</span>
-                      <span className="badge bg-warning text-dark">{p.stock}</span>
+                      <span className={stockBadgeClass(p.stock)} title={p.stock === 0 ? 'Inventario agotado' : 'Stock crítico'}>
+                        {stockBadgeText(p.stock)}
+                      </span>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="text-muted">Sin alertas de stock</p>
+                <p className="text-muted d-flex align-items-center gap-2">
+                  <span role="img" aria-label="estable">🟢</span>
+                  Inventario estable – sin alertas de stock
+                </p>
               )}
             </div>
           </div>
@@ -93,7 +116,7 @@ export default function Inventario() {
             {isSuperAdmin ? (
               <CrearProd />
             ) : (
-              <div className="card p-3">
+              <div className="card p-3 shadow-sm rounded-3">
                 <h6 className="text-muted mb-0">Solo SUPER_ADMIN puede crear productos</h6>
               </div>
             )}
