@@ -1,0 +1,253 @@
+/* ===========================
+   GreenBunny Dashboard Styles
+=========================== */
+
+/* Variables de colores GreenBunny */
+:root {
+  --gb-green: #82aa31;
+  --gb-green-light: #a8c957;
+  --gb-green-pastel: #e8f5d0;
+  --gb-pink: #f8a9c4;
+  --gb-pink-light: #fcc8d8;
+  --gb-pink-pastel: #fff1f6;
+  --gb-warning: #ffc107;
+  --gb-warning-light: #fff3cd;
+  --gb-text: #333333;
+  --gb-muted: #6c757d;
+  --gb-white: #ffffff;
+  --gb-shadow: rgba(0, 0, 0, 0.08);
+  --gb-shadow-hover: rgba(0, 0, 0, 0.15);
+}
+
+/* Contenedor principal del dashboard */
+.dashboard-container {
+  background: linear-gradient(135deg, #ffffff 0%, var(--gb-pink-pastel) 50%, var(--gb-green-pastel) 100%);
+  min-height: calc(100vh - 120px);
+  padding: 2rem 1rem;
+}
+
+/* Título de bienvenida */
+.dashboard-welcome {
+  color: var(--gb-green);
+  font-weight: 700;
+  font-size: 1.8rem;
+  text-shadow: 0 2px 4px var(--gb-shadow);
+  margin-bottom: 2rem;
+}
+
+/* Tarjetas del dashboard */
+.dashboard-card {
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px var(--gb-shadow);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px var(--gb-shadow-hover);
+}
+
+/* Tarjeta verde (productos) */
+.dashboard-card-green {
+  background: linear-gradient(135deg, var(--gb-green-pastel) 0%, #f0f8e8 100%);
+  border-left: 5px solid var(--gb-green);
+}
+
+.dashboard-card-green .dashboard-icon {
+  color: var(--gb-green);
+}
+
+/* Tarjeta rosa (usuarios) */
+.dashboard-card-pink {
+  background: linear-gradient(135deg, var(--gb-pink-pastel) 0%, #fef7fa 100%);
+  border-left: 5px solid var(--gb-pink);
+}
+
+.dashboard-card-pink .dashboard-icon {
+  color: var(--gb-pink);
+}
+
+/* Tarjeta de advertencia (stock bajo) */
+.dashboard-card-warning {
+  background: linear-gradient(135deg, var(--gb-warning-light) 0%, #fefbf0 100%);
+  border-left: 5px solid var(--gb-warning);
+}
+
+.dashboard-card-warning .dashboard-icon {
+  color: var(--gb-warning);
+}
+
+/* Iconos del dashboard */
+.dashboard-icon {
+  font-size: 3rem;
+  opacity: 0.8;
+}
+
+/* Números grandes */
+.dashboard-number {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--gb-text);
+  margin: 0.5rem 0;
+  text-shadow: 0 2px 4px var(--gb-shadow);
+}
+
+/* Títulos de las tarjetas */
+.dashboard-card .card-title {
+  color: var(--gb-text);
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+/* Texto descriptivo */
+.dashboard-card .text-muted {
+  color: var(--gb-muted) !important;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Botones de acceso rápido */
+.dashboard-btn {
+  border: none;
+  border-radius: 15px;
+  padding: 1rem 1.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px var(--gb-shadow);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.dashboard-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px var(--gb-shadow-hover);
+}
+
+.dashboard-btn:active {
+  transform: translateY(0);
+}
+
+/* Botón primario (productos) */
+.dashboard-btn-primary {
+  background: linear-gradient(135deg, var(--gb-green) 0%, var(--gb-green-light) 100%);
+  color: var(--gb-white);
+}
+
+.dashboard-btn-primary:hover {
+  background: linear-gradient(135deg, var(--gb-green-light) 0%, var(--gb-green) 100%);
+  color: var(--gb-white);
+}
+
+/* Botón secundario (usuarios) */
+.dashboard-btn-secondary {
+  background: linear-gradient(135deg, var(--gb-pink) 0%, var(--gb-pink-light) 100%);
+  color: var(--gb-white);
+}
+
+.dashboard-btn-secondary:hover {
+  background: linear-gradient(135deg, var(--gb-pink-light) 0%, var(--gb-pink) 100%);
+  color: var(--gb-white);
+}
+
+/* Spinner de carga */
+.spinner-border.text-success {
+  color: var(--gb-green) !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem 0.5rem;
+  }
+  
+  .dashboard-welcome {
+    font-size: 1.4rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .dashboard-number {
+    font-size: 2.5rem;
+  }
+  
+  .dashboard-icon {
+    font-size: 2.5rem;
+  }
+  
+  .dashboard-btn {
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .dashboard-welcome {
+    font-size: 1.2rem;
+    line-height: 1.4;
+  }
+  
+  .dashboard-number {
+    font-size: 2rem;
+  }
+  
+  .dashboard-icon {
+    font-size: 2rem;
+  }
+  
+  .dashboard-card .card-title {
+    font-size: 1rem;
+  }
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dashboard-card {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.dashboard-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.dashboard-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dashboard-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+/* Efectos adicionales */
+.dashboard-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.dashboard-card:hover::before {
+  opacity: 1;
+}
