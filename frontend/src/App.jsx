@@ -1,6 +1,7 @@
 import './App.css'
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-icons/font/bootstrap-icons.css'
 import AdminLayout from './componentes/Admin/AdminLayout'
 import Inventario from './pages/Inventario/Inventario'
 import Dashboard from './pages/Dashboard/Dashboard'
