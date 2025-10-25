@@ -10,12 +10,14 @@ export default function EditarProductoModal({ product, onClose, onSaved, disable
   const [file, setFile] = useState(null)
   const [previewUrl, setPreviewUrl] = useState('')
   const [saving, setSaving] = useState(false)
+  const [nombre, setNombre] = useState('')
 
   useEffect(() => {
     if (product) {
       setPrecio(String(product.precio ?? ''))
       setDescripcion(String(product.descripcion ?? ''))
       setStock(String(product.stock ?? ''))
+      setNombre(String(product.nombre ?? ''))
       const current = product.imagenUrl ? `http://localhost:8080${product.imagenUrl}` : ''
       setPreviewUrl(current)
     }
@@ -49,6 +51,7 @@ export default function EditarProductoModal({ product, onClose, onSaved, disable
       const stockNumber = Number(clampStock(stock))
       const payload = {
         ...product,
+        nombre: nombre.trim(),
         precio: Number(precio),
         descripcion,
         activo: product.activo,
@@ -103,6 +106,18 @@ export default function EditarProductoModal({ product, onClose, onSaved, disable
                 disabled={disabled || saving}
               />
               <div className="form-text">Opcional: si seleccionas archivo, se reemplaza la imagen.</div>
+            </div>
+            {/* Campo de nombre del producto */}
+            <div className="mb-3">
+              <label className="form-label">Nombre</label>
+              <input
+                type="text"
+                className="form-control"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                style={{ borderRadius: 10, border: '1px solid var(--gb-green)' }}
+                disabled={disabled || saving}
+              />
             </div>
             <div className="mb-3">
               <label className="form-label">Precio</label>

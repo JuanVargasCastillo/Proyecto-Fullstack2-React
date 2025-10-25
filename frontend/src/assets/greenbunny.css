@@ -304,12 +304,88 @@
   background-color: rgba(130, 170, 49, 0.08);
 }
 
-/* GreenBunny Admin — Navbar ajustes finales */
+/* GreenBunny Admin — Navbar estilo detallado */
 .gb-navbar {
   background-color: #fff;
-  box-shadow: 0 1px 0 #eee;
+  border-bottom: 1px solid #eee;
 }
-.gb-navbar { width: 100%; }
+.gb-navbar .navbar-brand img {
+  height: 44px;
+  width: auto;
+}
+.gb-navbar .btn-hamburguesa {
+  border: none;
+  background: transparent;
+  color: #a8e6a1; /* lime */
+  padding: 6px 8px;
+}
+.gb-navbar .btn-hamburguesa .bi {
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+.gb-navbar .btn-hamburguesa:hover {
+  color: var(--gb-green);
+}
+.gb-navbar .btn-hamburguesa:hover .bi {
+  transform: translateY(-1px);
+}
+.gb-navbar .titulo-admin {
+  color: var(--gb-green);
+  font-weight: 700;
+}
+.gb-navbar .btn-notificacion {
+  border: none;
+  background: transparent;
+  color: var(--gb-muted);
+}
+.gb-navbar .btn-notificacion:hover { color: var(--gb-green); }
+
+/* Botón Cerrar Sesión: borde verde y texto negro */
+.gb-navbar .btn-cerrar-sesion {
+  border: 2px solid var(--gb-green);
+  background: #fff;
+  color: #000;
+  border-radius: 10px;
+  padding: 6px 12px;
+  font-weight: 700;
+}
+.gb-navbar .btn-cerrar-sesion:hover {
+  background: var(--gb-green);
+  color: #fff;
+}
+
+/* Footer GreenBunny detallado */
+.bg-footer {
+  background: linear-gradient(180deg, #ffffff 0%, rgba(130,170,49,0.12) 100%);
+  border-top: 1px solid #eee;
+}
+.footer-title {
+  color: var(--gb-green);
+  font-weight: 800;
+}
+.footer-link {
+  color: var(--gb-muted);
+  text-decoration: none;
+  font-weight: 600;
+}
+.footer-link:hover { color: var(--gb-green); text-decoration: underline; }
+.footer-social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--gb-green);
+  color: var(--gb-green);
+  transition: all 0.2s ease;
+}
+.footer-social:hover { background: var(--gb-green); color: #fff; }
+.footer-copy { color: var(--gb-muted); }
+
+/* Responsivo para navbar: ocultar centro en móviles */
+@media (max-width: 768px) {
+  .gb-navbar .titulo-admin { display: none; }
+}
 .admin-layout { min-width: 100%; }
 .gb-navbar .container-fluid {
   align-items: center;
