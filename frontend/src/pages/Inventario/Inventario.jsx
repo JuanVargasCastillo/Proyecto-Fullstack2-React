@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import { listarProductos, listarProductosBajoStock, eliminarProducto } from '../../services/productos'
+import { listarProductos, listarProductosBajoStock, eliminarProducto, desactivarProducto, actualizarProducto } from '../../services/productos'
 import { useToast } from '../../componentes/shared/ToastProvider'
 import ProductosList from '../../componentes/Productos/ProductosList'
+import EditarProductoModal from '../../componentes/Productos/EditarProductoModal'
 import CrearProd from '../../componentes/CrearProd/CrearProd'
 import { listarCategorias } from '../../services/categorias'
 
@@ -14,6 +15,7 @@ export default function Inventario() {
   const [searchQuery, setSearchQuery] = useState('')
   const [categorias, setCategorias] = useState([])
   const [selectedCategoryId, setSelectedCategoryId] = useState('')
+  const [editingProduct, setEditingProduct] = useState(null)
 
   const cargar = async () => {
     try {
@@ -44,6 +46,40 @@ export default function Inventario() {
       await cargar()
     } catch (err) {
       show(err.message || 'Error al eliminar producto', 'danger')
+    }
+  }
+
+  const startEdit = (p) => {
+    if (!isSuperAdmin) {
+      show('Acción disponible solo para SUPER_ADMIN', 'warning')
+      return
+    }
+    setEditingProduct(p)
+  }
+
+  const closeEdit = () => setEditingProduct(null)
+
+  const onSaved = async () => {
+    await cargar()
+  }
+
+  const toggleActivo = async (p) => {
+    if (!isSuperAdmin) {
+      show('Acción disponible solo para SUPER_ADMIN', 'warning')
+      return
+    }
+    try {
+      if (p.activo) {
+        await desactivarProducto(p.id)
+        show('Producto desactivado', 'success')
+      } else {
+        const payload = { ...p, activo: true }
+        await actualizarProducto(p.id, payload)
+        show('Producto activado', 'success')
+      }
+      await cargar()
+    } catch (err) {
+      show(err.message || 'Error al cambiar estado', 'danger')
     }
   }
 
@@ -130,7 +166,25 @@ export default function Inventario() {
               <span className="text-success">Cargando inventario…</span>
             </div>
           ) : (
-            <ProductosList productos={productos} onDelete={borrar} canDelete={isSuperAdmin} searchQuery={searchQuery} categoryId={selectedCategoryId} />
+            <>
+              <ProductosList
+                productos={productos}
+                onDelete={borrar}
+                canDelete={isSuperAdmin}
+                searchQuery={searchQuery}
+                categoryId={selectedCategoryId}
+                onEdit={startEdit}
+                onToggleActivo={toggleActivo}
+              />
+              {editingProduct && (
+                <EditarProductoModal
+                  product={editingProduct}
+                  onClose={closeEdit}
+                  onSaved={onSaved}
+                  disabled={!isSuperAdmin}
+                />
+              )}
+            </>
           )}
         </div>
         <div className="col-12 col-lg-4">
