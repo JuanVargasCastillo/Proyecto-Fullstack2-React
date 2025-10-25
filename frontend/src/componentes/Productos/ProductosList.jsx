@@ -1,4 +1,4 @@
-export default function ProductosList({ productos = [], onDelete, canDelete = true }) {
+export default function ProductosList({ productos = [], onDelete, canDelete = true, searchQuery = '' }) {
   const formatPrice = (value) => {
     try {
       const n = Number(value)
@@ -18,13 +18,23 @@ export default function ProductosList({ productos = [], onDelete, canDelete = tr
     return { cls: 'badge bg-success', text: `Stock: ${stock}`, title: 'Stock disponible' }
   }
 
-  if (!productos.length) {
+  // Filtrado client-side por nombre
+  const q = String(searchQuery || '').trim().toLowerCase()
+  const filtered = q
+    ? productos.filter((p) => String(p.nombre || '').toLowerCase().includes(q))
+    : productos
+
+  // Mensajes según estado y búsqueda
+  if (!productos.length && !q) {
     return <p className="text-center text-muted my-4">No hay productos registrados todavía 🛒</p>
+  }
+  if (q && !filtered.length) {
+    return <p className="text-center text-muted my-4">No se encontraron productos</p>
   }
 
   return (
     <div className="row g-3">
-      {productos.map((p) => {
+      {filtered.map((p) => {
         const isLowStock = p.stock < 5 && p.stock > 0
         const isOutOfStock = p.stock === 0
         const badge = stockBadge(p.stock)
@@ -149,20 +159,18 @@ export default function ProductosList({ productos = [], onDelete, canDelete = tr
                   </>
                 )}
               </div>
+
               <div className="card-body d-flex flex-column">
                 <h5 className="card-title text-center">{p.nombre}</h5>
-                
                 {p.categoria?.nombre && (
                   <p className="text-center text-muted mb-2">
                     <i className="bi bi-tag me-1"></i>
                     {p.categoria.nombre}
                   </p>
                 )}
-
                 {p.descripcion && (
                   <p className="card-text text-muted text-center">{p.descripcion}</p>
                 )}
-
                 <div className="mt-auto">
                   <div className="d-flex justify-content-between align-items-center mb-2">
                     <span className="fw-bold" style={{ color: 'var(--gb-green)' }}>
@@ -172,7 +180,6 @@ export default function ProductosList({ productos = [], onDelete, canDelete = tr
                       {badge.text}
                     </span>
                   </div>
-                  
                   <div className="text-center">
                     {onDelete && (
                       <button
