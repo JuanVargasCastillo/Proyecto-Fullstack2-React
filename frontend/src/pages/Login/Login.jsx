@@ -95,8 +95,8 @@ export default function Login() {
     <div className="login-page">
       <div className="login-card">
         <div className="brand">
-          <img src="/img/logo.png" alt="GreenBunny" className="brand-logo" />
-          <h1 className="brand-title">GreenBunny</h1>
+          <img src="/img/logo2.png" alt="Green Bunny Store" className="brand-logo" />
+          {/* Texto de marca eliminado por solicitud */}
           <p className="brand-subtitle">Bienvenido de nuevo</p>
         </div>
 

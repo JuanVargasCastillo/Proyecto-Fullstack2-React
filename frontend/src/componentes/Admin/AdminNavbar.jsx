@@ -16,7 +16,7 @@ export default function AdminNavbar() {
 
   return (
     <nav className="navbar navbar-expand-lg gb-navbar w-100 py-2">
-      <div className="container-fluid d-flex align-items-center">
+      <div className="container-fluid d-flex align-items-center position-relative">
         {/* Botón hamburguesa GreenBunny */}
         <button className="btn btn-hamburguesa me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral" aria-controls="menuLateral" aria-label="Abrir menú">
           <i className="bi bi-list fs-3"></i>
@@ -27,8 +27,8 @@ export default function AdminNavbar() {
           <img src="/img/logo2.png" alt="Green Bunny Store" />
         </Link>
 
-        {/* Texto centrado */}
-        <div className="gb-nav-center d-none d-md-flex align-items-center mx-auto">
+        {/* Texto centrado - posición absoluta para centrado perfecto */}
+        <div className="position-absolute top-50 start-50 translate-middle d-none d-md-block">
           <h5 className="mb-0 titulo-admin">Panel Administrador</h5>
         </div>
 
