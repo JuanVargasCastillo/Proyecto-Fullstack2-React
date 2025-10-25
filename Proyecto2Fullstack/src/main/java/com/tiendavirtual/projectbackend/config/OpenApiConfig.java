@@ -19,7 +19,7 @@ public class OpenApiConfig {
                 .description("Documentación del backend para la gestión de usuarios, productos y autenticación simple. Proyecto académico desarrollado por estudiantes de Duoc UC.")
                 .version("1.0.0")
                 .contact(new Contact()
-                    .name("Profesor Víctor Poblete")
+                    .name("vpobletel@profesor.duoc.cl")
                     .email("vpobletel@profesor.duoc.cl") 
                     .url(null)) 
                 .license(new License()
