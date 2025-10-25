@@ -11,17 +11,17 @@ INSERT INTO categoria (nombre) VALUES ('Accesorios');
 -- ===========================================
 INSERT INTO producto (nombre, descripcion, precio, activo, categoria_id, stock, imagen_url) VALUES
 -- Hombre (1)
-('Camisa a cuadros', 'Camisa manga larga de algodón, estilo casual, talla M', 16990.00, true, 1, 10, '/uploads/Producto-5.png'),
-('Polera deportiva Nike', 'Polera gris de secado rápido, ideal para entrenamiento', 19990.00, true, 1, 12, '/uploads/Producto-6.png'),
+('Camisa a cuadros', 'Camisa manga larga de algodon, estilo casual, talla M', 16990.00, true, 1, 10, '/uploads/Producto-5.png'),
+('Polera deportiva Nike', 'Polera gris de secado rapido, ideal para entrenamiento', 19990.00, true, 1, 12, '/uploads/Producto-6.png'),
 ('Cortaviento Columbia', 'Chaqueta ligera bicolor, resistente al agua', 29990.00, true, 1, 8, '/uploads/Producto-7.png'),
-('Polerón azul con botones', 'Polerón abotonado con capucha, tela gruesa, talla L', 25990.00, true, 1, 6, '/uploads/Producto-10.png'),
+('Polerón azul con botones', 'Poleron abotonado con capucha, tela gruesa, talla L', 25990.00, true, 1, 6, '/uploads/Producto-10.png'),
 
 -- Mujer (2)
 ('Top rojo animal print', 'Top ajustado rojo con estampado de tigre, manga larga', 17990.00, true, 2, 9, '/uploads/Producto-8.png'),
 ('Blusa floral negra', 'Blusa manga larga con diseño floral y escote tipo off-shoulder', 15990.00, true, 2, 10, '/uploads/Producto-9.png'),
 ('Blusa floral corta', 'Blusa de verano con nudo frontal y estampado de flores', 13990.00, true, 2, 14, '/uploads/Producto-11.png'),
 ('Jardinera denim', 'Jardinera corta de mezclilla azul, botones frontales', 21990.00, true, 2, 7, '/uploads/Producto-12.png'),
-('Polera rugby bicolor', 'Polera de algodón estilo rugby en tonos celeste y negro', 16990.00, true, 2, 10, '/uploads/Producto-13.png'),
+('Polera rugby bicolor', 'Polera de algodon estilo rugby en tonos celeste y negro', 16990.00, true, 2, 10, '/uploads/Producto-13.png'),
 ('Vestido floral retro', 'Vestido corto de verano, estampado colorido con lazos laterales', 18990.00, true, 2, 8, '/uploads/Producto-4.png'),
 
 -- Niños (3)
@@ -30,8 +30,8 @@ INSERT INTO producto (nombre, descripcion, precio, activo, categoria_id, stock, 
 
 -- Accesorios (4)
 ('Aros dorados trenzados', 'Aros grandes color dorado con diseño trenzado', 7990.00, true, 4, 15, '/uploads/Producto-14.png'),
-('Aros mariposa dorada', 'Aros metálicos con forma de mariposa, color oro', 6990.00, true, 4, 18, '/uploads/Producto-2.png'),
-('Aros cítricos', 'Aros colgantes con diseño de rodajas de limón y lima', 9990.00, true, 4, 12, '/uploads/Producto-3.png');
+('Aros mariposa dorada', 'Aros metalicos con forma de mariposa, color oro', 6990.00, true, 4, 18, '/uploads/Producto-2.png'),
+('Aros citricos', 'Aros colgantes con diseño de rodajas de limon y lima', 9990.00, true, 4, 12, '/uploads/Producto-3.png');
 
 -- ===========================================
 -- USUARIO ADMINISTRADOR POR DEFECTO
