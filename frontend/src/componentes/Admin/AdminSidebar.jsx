@@ -1,5 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { Offcanvas } from 'bootstrap'
+import './AdminSidebar.css'
+import { useEffect } from 'react'
 
 export default function AdminSidebar() {
   const navigate = useNavigate()
@@ -11,40 +13,66 @@ export default function AdminSidebar() {
     document.body.style.removeProperty('padding-right')
     document.body.style.removeProperty('touch-action')
     document.documentElement.style.removeProperty('overflow')
+    // Forzar retiro de clases/elementos residuales
+    document.body.classList.remove('offcanvas-backdrop')
+    document.querySelectorAll('.offcanvas.show').forEach(el => el.classList.remove('show'))
+    const menuEl = document.getElementById('menuLateral')
+    if (menuEl) {
+      menuEl.classList.remove('show')
+      menuEl.setAttribute('aria-hidden', 'true')
+    }
   }
 
-  const handleNavigate = (path) => {
-    navigate(path)
+  const safeHideOffcanvas = () => {
     const menuEl = document.getElementById('menuLateral')
     if (menuEl) {
       const offcanvasInstance = Offcanvas.getInstance(menuEl) || new Offcanvas(menuEl)
-      const onHidden = () => {
-        cleanupBackdropAndScroll()
-        menuEl.removeEventListener('hidden.bs.offcanvas', onHidden)
-      }
-      menuEl.addEventListener('hidden.bs.offcanvas', onHidden)
       offcanvasInstance.hide()
     }
-    // Limpieza inmediata por si la navegación ocurre antes de que termine la transición
+    // Limpieza inmediata y fallback tras la transición
     cleanupBackdropAndScroll()
-    // Fallback tras la duración típica de transición de Bootstrap
     setTimeout(() => cleanupBackdropAndScroll(), 350)
+  }
+
+  useEffect(() => {
+    const menuEl = document.getElementById('menuLateral')
+    if (!menuEl) return
+    const onHidden = () => cleanupBackdropAndScroll()
+    const onHide = () => cleanupBackdropAndScroll()
+    menuEl.addEventListener('hidden.bs.offcanvas', onHidden)
+    menuEl.addEventListener('hide.bs.offcanvas', onHide)
+    return () => {
+      menuEl.removeEventListener('hidden.bs.offcanvas', onHidden)
+      menuEl.removeEventListener('hide.bs.offcanvas', onHide)
+    }
+  }, [])
+
+  const handleNavigate = (path) => {
+    navigate(path)
+    safeHideOffcanvas()
   }
 
   return (
     <div className="offcanvas offcanvas-start" tabIndex="-1" id="menuLateral" aria-labelledby="menuLateralLabel">
       <div className="offcanvas-header">
         <h5 className="offcanvas-title" id="menuLateralLabel">Menú</h5>
-        <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close" onClick={safeHideOffcanvas}></button>
       </div>
-      <div className="offcanvas-body">
-        <ul className="list-group list-group-flush">
+      <div className="offcanvas-body gb-admin-sidebar">
+        <ul className="list-group list-group-flush gb-menu-list">
           <li className="list-group-item">
-            <button type="button" className="btn btn-link p-0 text-decoration-none" onClick={() => handleNavigate('/dashboard')}>Inicio</button>
+            <button type="button" className="gb-menu-item btn btn-link" onClick={() => handleNavigate('/dashboard')}>
+              <i className="bi bi-house gb-menu-icon" aria-hidden="true"></i>
+              <span>Inicio</span>
+            </button>
           </li>
           <li className="list-group-item">
-            <button type="button" className="btn btn-link p-0 text-decoration-none" onClick={() => handleNavigate('/inventario')}>Productos</button>
+            <button type="button" className="gb-menu-item btn btn-link" onClick={() => handleNavigate('/inventario')}>
+              <i className="bi bi-box-seam gb-menu-icon" aria-hidden="true"></i>
+              <span>Productos</span>
+            </button>
           </li>
+          {false && (
           <li className="list-group-item">
             <a className="text-decoration-none d-flex align-items-center" data-bs-toggle="collapse" href="#menuCategorias" role="button" aria-expanded="false" aria-controls="menuCategorias">
               Categorías <i className="bi bi-chevron-down ms-2"></i>
@@ -57,17 +85,33 @@ export default function AdminSidebar() {
               </ul>
             </div>
           </li>
+          )}
           <li className="list-group-item">
-            <button type="button" className="btn btn-link p-0 text-decoration-none" onClick={() => handleNavigate('/usuarios')}>Usuarios</button>
+            <button type="button" className="gb-menu-item btn btn-link" onClick={() => handleNavigate('/usuarios')}>
+              <i className="bi bi-people gb-menu-icon" aria-hidden="true"></i>
+              <span>Usuarios</span>
+            </button>
+          </li>
+          <li className="list-group-item gb-bottom-start">
+            <div className="gb-divider"></div>
           </li>
           <li className="list-group-item">
-            <span className="text-muted">Configuración</span>
+            <div className="gb-menu-item">
+              <i className="bi bi-gear gb-menu-icon" aria-hidden="true"></i>
+              <span>Configuración</span>
+            </div>
           </li>
           <li className="list-group-item">
-            <span className="text-muted">Ayuda</span>
+            <div className="gb-menu-item">
+              <i className="bi bi-question-circle gb-menu-icon" aria-hidden="true"></i>
+              <span>Ayuda</span>
+            </div>
           </li>
           <li className="list-group-item">
-            <span className="text-muted">Perfil</span>
+            <div className="gb-menu-item">
+              <i className="bi bi-person-circle gb-menu-icon" aria-hidden="true"></i>
+              <span>Perfil</span>
+            </div>
           </li>
         </ul>
       </div>

@@ -1,0 +1,87 @@
+/* GreenBunny styles for Admin Sidebar (hamburger menu) */
+
+/* Header title stays green */
+.offcanvas-title {
+  color: #7ca13a;
+}
+
+/* Sidebar body and list layout */
+.gb-admin-sidebar .list-group-item {
+  background: transparent;
+  border: none;
+  padding: 0; /* remove default padding to control left spacing via item */
+}
+.gb-admin-sidebar .gb-menu-list {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+.gb-admin-sidebar .gb-bottom-start {
+  margin-top: auto; /* push bottom group to end */
+}
+
+/* Menu item: left-aligned text-only look, white bg by default */
+.gb-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* ensure left alignment */
+  text-align: left; /* text left aligned */
+  gap: 12px; /* 10–12px for legibility */
+  width: 100%;
+  padding: 10px 12px 10px 16px; /* include ~16px left padding */
+  background-color: #ffffff; /* default white background */
+  color: #000000; /* text always black */
+  text-decoration: none;
+  border: none; /* remove any box/border */
+  border-radius: 0; /* no rounded corners */
+  box-shadow: none; /* no shadows */
+  transition: background-color 0.3s ease; /* smooth background change only */
+}
+
+/* Remove default link styles from Bootstrap's btn-link */
+.gb-menu-item.btn-link {
+  text-decoration: none;
+}
+.gb-menu-item.btn-link:hover {
+  text-decoration: none;
+}
+.gb-menu-item:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Hover/active: pastel pink background, text stays black; applies icon + text together */
+.gb-menu-item:hover,
+.gb-menu-item:focus,
+.gb-menu-item.active,
+.gb-menu-item:active {
+  background-color: #fdbfd3; /* pure pastel pink */
+  color: #000000;
+}
+
+/* Icon color grey by default, black when hovered/active */
+.gb-menu-icon {
+  color: #5a5a5a; /* medium grey */
+  font-size: 1.1rem;
+}
+.gb-menu-item:hover .gb-menu-icon,
+.gb-menu-item.active .gb-menu-icon,
+.gb-menu-item:active .gb-menu-icon {
+  color: #000000; /* black when hovered/active */
+}
+
+/* Thin divider for visual separation */
+.gb-divider {
+  height: 1px;
+  background-color: #e9ecef;
+  margin: 6px 0;
+  border-radius: 1px;
+}
+
+/* Ensure a pleasant touch feedback on mobile (no hover-capable devices) */
+@media (hover: none) {
+  .gb-menu-item:active {
+    background-color: #fdbfd3;
+    color: #000000;
+  }
+}
