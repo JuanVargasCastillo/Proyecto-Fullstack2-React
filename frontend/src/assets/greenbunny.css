@@ -310,7 +310,7 @@
   border-bottom: 1px solid #eee;
 }
 .gb-navbar .navbar-brand img {
-  height: 44px;
+  height: 80px;
   width: auto;
 }
 .gb-navbar .btn-hamburguesa {
@@ -391,7 +391,7 @@
   align-items: center;
 }
 .gb-navbar .gb-nav-center .navbar-brand img {
-  height: 48px;
+  height: 64px;
   width: auto;
 }
 .gb-navbar .titulo-admin {
