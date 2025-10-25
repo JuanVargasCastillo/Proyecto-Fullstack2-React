@@ -1,4 +1,4 @@
-export default function ProductosList({ productos = [], onDelete, canDelete = true, searchQuery = '' }) {
+export default function ProductosList({ productos = [], onDelete, canDelete = true, searchQuery = '', categoryId = '' }) {
   const formatPrice = (value) => {
     try {
       const n = Number(value)
@@ -18,17 +18,18 @@ export default function ProductosList({ productos = [], onDelete, canDelete = tr
     return { cls: 'badge bg-success', text: `Stock: ${stock}`, title: 'Stock disponible' }
   }
 
-  // Filtrado client-side por nombre
+  // Filtrado client-side por nombre y categoría
   const q = String(searchQuery || '').trim().toLowerCase()
-  const filtered = q
-    ? productos.filter((p) => String(p.nombre || '').toLowerCase().includes(q))
-    : productos
+  const cid = String(categoryId || '').trim()
+  const filtered = productos
+    .filter((p) => !q || String(p.nombre || '').toLowerCase().includes(q))
+    .filter((p) => !cid || String(p?.categoria?.id ?? '') === cid)
 
-  // Mensajes según estado y búsqueda
-  if (!productos.length && !q) {
+  // Mensajes según estado y búsqueda/categoría
+  if (!productos.length && !q && !cid) {
     return <p className="text-center text-muted my-4">No hay productos registrados todavía 🛒</p>
   }
-  if (q && !filtered.length) {
+  if ((q || cid) && !filtered.length) {
     return <p className="text-center text-muted my-4">No se encontraron productos</p>
   }
 

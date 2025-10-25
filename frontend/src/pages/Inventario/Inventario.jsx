@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { listarProductos, listarProductosBajoStock, eliminarProducto } from '../../services/productos'
 import { useToast } from '../../componentes/shared/ToastProvider'
 import ProductosList from '../../componentes/Productos/ProductosList'
-import { obtenerProductos } from '../../services/productosService'
 import CrearProd from '../../componentes/CrearProd/CrearProd'
+import { listarCategorias } from '../../services/categorias'
 
 export default function Inventario() {
   const { show } = useToast()
@@ -12,17 +12,17 @@ export default function Inventario() {
   const [loading, setLoading] = useState(true)
   const [isSuperAdmin, setIsSuperAdmin] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [categorias, setCategorias] = useState([])
+  const [selectedCategoryId, setSelectedCategoryId] = useState('')
 
   const cargar = async () => {
     try {
       setLoading(true)
       const [all, low] = await Promise.all([
         listarProductos(),
-        listarProductosBajoStock(5), // Cambiado a 5 para capturar stock < 5
+        listarProductosBajoStock(5),
       ])
       setProductos(all)
-      
-      // Filtrar productos con stock < 5 en el frontend para asegurar consistencia
       const alertas = all.filter(p => p.stock < 5)
       setBajoStock(alertas)
     } catch (err) {
@@ -60,6 +60,18 @@ export default function Inventario() {
     }
   }, [])
 
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const data = await listarCategorias()
+        setCategorias(Array.isArray(data) ? data : [])
+      } catch (e) {
+        setCategorias([])
+      }
+    }
+    fetchCategorias()
+  }, [])
+
   const stockBadgeClass = (stock) => {
     if (stock === 0) return 'badge bg-danger'
     if (stock < 5) return 'badge bg-warning text-dark'
@@ -90,6 +102,23 @@ export default function Inventario() {
                   style={{ borderRadius: 12, padding: '8px 12px 8px 32px', border: '1px solid var(--gb-green)', outline: 'none' }}
                 />
               </div>
+              <div className="position-relative" style={{ minWidth: 220 }}>
+                <i className="bi bi-tag position-absolute" style={{ left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--gb-green)' }}></i>
+                <select
+                  className="form-select"
+                  value={selectedCategoryId}
+                  onChange={(e) => setSelectedCategoryId(e.target.value)}
+                  aria-label="Filtrar por categoría"
+                  style={{ borderRadius: 12, padding: '8px 12px 8px 32px', border: '1px solid var(--gb-green)', outline: 'none' }}
+                >
+                  <option value="">Todas las categorías</option>
+                  {categorias.map((cat) => (
+                    <option key={cat.id} value={String(cat.id)}>
+                      {cat.nombre}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <button className="btn btn-success btn-sm" onClick={cargar} disabled={loading} style={{ transition: 'all 0.3s ease' }}>
                 {loading ? 'Actualizando...' : 'Actualizar'}
               </button>
@@ -101,7 +130,7 @@ export default function Inventario() {
               <span className="text-success">Cargando inventario…</span>
             </div>
           ) : (
-            <ProductosList productos={productos} onDelete={borrar} canDelete={isSuperAdmin} searchQuery={searchQuery} />
+            <ProductosList productos={productos} onDelete={borrar} canDelete={isSuperAdmin} searchQuery={searchQuery} categoryId={selectedCategoryId} />
           )}
         </div>
         <div className="col-12 col-lg-4">
