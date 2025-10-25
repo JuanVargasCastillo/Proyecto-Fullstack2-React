@@ -1,4 +1,4 @@
-export default function ProductosList({ productos = [], onDelete, canDelete = true, searchQuery = '', categoryId = '' }) {
+export default function ProductosList({ productos = [], onDelete, canDelete = true, searchQuery = '', categoryId = '', onEdit, onToggleActivo }) {
   const formatPrice = (value) => {
     try {
       const n = Number(value)
@@ -181,14 +181,66 @@ export default function ProductosList({ productos = [], onDelete, canDelete = tr
                       {badge.text}
                     </span>
                   </div>
-                  <div className="text-center">
+                  <div className="d-flex justify-content-center gap-2">
+                    {onEdit && (
+                      <button
+                        className="btn btn-sm"
+                        onClick={() => onEdit(p)}
+                        disabled={!canDelete}
+                        title={!canDelete ? 'Acción disponible solo para SUPER_ADMIN' : 'Editar'}
+                        style={{
+                          borderRadius: 10,
+                          padding: '2px 8px',
+                          border: '1px solid #a8e6a1',
+                          color: '#45a157',
+                          backgroundColor: 'transparent',
+                          boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#a8e6a1'; e.currentTarget.style.color = '#1b3b21' }}
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#45a157' }}
+                      >
+                        ✏️ Editar
+                      </button>
+                    )}
+                    {onToggleActivo && (
+                      <button
+                        className="btn btn-sm"
+                        onClick={() => onToggleActivo(p)}
+                        disabled={!canDelete}
+                        title={!canDelete ? 'Acción disponible solo para SUPER_ADMIN' : (p.activo ? 'Desactivar' : 'Activar')}
+                        style={{
+                          borderRadius: 10,
+                          padding: '2px 8px',
+                          border: `1px solid ${p.activo ? '#f6c6d0' : '#a8e6a1'}`,
+                          color: p.activo ? '#d36a89' : '#45a157',
+                          backgroundColor: 'transparent',
+                          boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = p.activo ? '#f6c6d0' : '#a8e6a1'; e.currentTarget.style.color = p.activo ? '#fff' : '#1b3b21' }}
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = p.activo ? '#d36a89' : '#45a157' }}
+                      >
+                        {p.activo ? '⛔ Desactivar' : '✅ Activar'}
+                      </button>
+                    )}
                     {onDelete && (
                       <button
-                        className="btn btn-outline-danger btn-sm"
+                        className="btn btn-sm"
                         onClick={() => onDelete(p.id)}
                         disabled={!canDelete}
                         title={!canDelete ? 'Acción disponible solo para SUPER_ADMIN' : 'Eliminar'}
-                        style={{ transition: 'all 0.3s ease' }}
+                        style={{
+                          borderRadius: 10,
+                          padding: '2px 8px',
+                          border: '1px solid #f6c6d0',
+                          color: '#d36a89',
+                          backgroundColor: 'transparent',
+                          boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#f6c6d0'; e.currentTarget.style.color = '#fff' }}
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#d36a89' }}
                       >
                         🗑️ Eliminar
                       </button>

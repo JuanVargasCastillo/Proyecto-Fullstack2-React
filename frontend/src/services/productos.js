@@ -52,3 +52,8 @@ export async function listarProductosBajoStock(threshold = 5) {
   const { data } = await api.get('/api/productos')
   return Array.isArray(data) ? data.filter((p) => Number(p?.stock ?? 0) < threshold) : []
 }
+
+export async function desactivarProducto(id) {
+  const { data } = await api.patch(`/api/productos/${id}/desactivar`)
+  return data
+}
