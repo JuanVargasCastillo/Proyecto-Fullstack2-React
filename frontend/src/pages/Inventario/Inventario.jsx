@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { listarProductos, listarProductosBajoStock, eliminarProducto } from '../../services/productos'
 import { useToast } from '../../componentes/shared/ToastProvider'
 import ProductosList from '../../componentes/Productos/ProductosList'
+import { obtenerProductos } from '../../services/productosService'
 import CrearProd from '../../componentes/CrearProd/CrearProd'
 
 export default function Inventario() {
@@ -10,6 +11,7 @@ export default function Inventario() {
   const [bajoStock, setBajoStock] = useState([])
   const [loading, setLoading] = useState(true)
   const [isSuperAdmin, setIsSuperAdmin] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
 
   const cargar = async () => {
     try {
@@ -75,10 +77,23 @@ export default function Inventario() {
       <div className="row g-4">
         <div className="col-12 col-lg-8">
           <div className="d-flex justify-content-between align-items-center mb-2">
-            <h4>Inventario</h4>
-            <button className="btn btn-success btn-sm" onClick={cargar} disabled={loading} style={{ transition: 'all 0.3s ease' }}>
-              {loading ? 'Actualizando...' : 'Actualizar'}
-            </button>
+            <h4 className="mb-0">Inventario</h4>
+            <div className="d-flex align-items-center gap-2">
+              <div className="position-relative" style={{ minWidth: 280 }}>
+                <i className="bi bi-search position-absolute" style={{ left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--gb-green)' }}></i>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Buscar producto..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  style={{ borderRadius: 12, padding: '8px 12px 8px 32px', border: '1px solid var(--gb-green)', outline: 'none' }}
+                />
+              </div>
+              <button className="btn btn-success btn-sm" onClick={cargar} disabled={loading} style={{ transition: 'all 0.3s ease' }}>
+                {loading ? 'Actualizando...' : 'Actualizar'}
+              </button>
+            </div>
           </div>
           {loading ? (
             <div className="text-center my-4">
@@ -86,7 +101,7 @@ export default function Inventario() {
               <span className="text-success">Cargando inventario…</span>
             </div>
           ) : (
-            <ProductosList productos={productos} onDelete={borrar} canDelete={isSuperAdmin} />
+            <ProductosList productos={productos} onDelete={borrar} canDelete={isSuperAdmin} searchQuery={searchQuery} />
           )}
         </div>
         <div className="col-12 col-lg-4">
