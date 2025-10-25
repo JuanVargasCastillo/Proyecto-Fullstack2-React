@@ -3,29 +3,35 @@
 -- ===========================================
 INSERT INTO categoria (nombre) VALUES ('Hombre');
 INSERT INTO categoria (nombre) VALUES ('Mujer');
-INSERT INTO categoria (nombre) VALUES ('Ninos'); 
+INSERT INTO categoria (nombre) VALUES ('Ninos');
 INSERT INTO categoria (nombre) VALUES ('Accesorios');
 
 -- ===========================================
 -- PRODUCTOS
 -- ===========================================
--- Todos usan categoria_id del 1 al 4
 INSERT INTO producto (nombre, descripcion, precio, activo, categoria_id, stock, imagen_url) VALUES
-('Polera Vintage 90s', 'Algodón, estampado clásico, talla M', 14990.00, true, 1, 12, NULL),
-('Polera Band Tee', 'Polera de banda, talla L, buen estado', 12990.00, true, 1, 8, NULL),
-('Pantalón Denim Clásico', 'Corte recto, talla 32', 19990.00, true, 2, 10, NULL),
-('Pantalón Cargo Retro', 'Color verde oliva, talla 34', 17990.00, true, 2, 6, NULL),
-('Chaqueta Retro Cuero', 'Cuero sintético, talla M', 29990.00, true, 3, 4, NULL),
-('Chaqueta Jean Oversize', 'Estilo 80s, talla XL', 24990.00, true, 3, 5, NULL),
-('Vestido Bohemio', 'Estampado floral, talla S', 18990.00, true, 4, 7, NULL),
-('Vestido Midi Vintage', 'Color vino, talla M', 20990.00, true, 4, 3, NULL),
-('Falda Plisada', 'Color beige, talla M', 15990.00, true, 4, 9, NULL),
-('Falda Denim', 'Talla 38, lavado medio', 16990.00, true, 4, 6, NULL),
-('Cinturón de Cuero Reutilizado', 'Hecho a mano con materiales reciclados', 9990.00, true, 4, 15, NULL),
-('Gorro Vintage Invierno', 'Lana gruesa, color gris', 7990.00, true, 4, 20, NULL),
-('Camisa Cuadros Clásica', 'Tela flannel, talla M', 18990.00, true, 1, 11, NULL),
-('Blusa Boho Chic', 'Tela ligera con bordados, talla S', 17990.00, true, 2, 14, NULL),
-('Bufanda Retro Lana', 'Color burdeos, hecha a mano', 12990.00, true, 4, 9, NULL);
+-- Hombre (1)
+('Camisa a cuadros', 'Camisa manga larga de algodón, estilo casual, talla M', 16990.00, true, 1, 10, '/uploads/Producto-5.png'),
+('Polera deportiva Nike', 'Polera gris de secado rápido, ideal para entrenamiento', 19990.00, true, 1, 12, '/uploads/Producto-6.png'),
+('Cortaviento Columbia', 'Chaqueta ligera bicolor, resistente al agua', 29990.00, true, 1, 8, '/uploads/Producto-7.png'),
+('Polerón azul con botones', 'Polerón abotonado con capucha, tela gruesa, talla L', 25990.00, true, 1, 6, '/uploads/Producto-10.png'),
+
+-- Mujer (2)
+('Top rojo animal print', 'Top ajustado rojo con estampado de tigre, manga larga', 17990.00, true, 2, 9, '/uploads/Producto-8.png'),
+('Blusa floral negra', 'Blusa manga larga con diseño floral y escote tipo off-shoulder', 15990.00, true, 2, 10, '/uploads/Producto-9.png'),
+('Blusa floral corta', 'Blusa de verano con nudo frontal y estampado de flores', 13990.00, true, 2, 14, '/uploads/Producto-11.png'),
+('Jardinera denim', 'Jardinera corta de mezclilla azul, botones frontales', 21990.00, true, 2, 7, '/uploads/Producto-12.png'),
+('Polera rugby bicolor', 'Polera de algodón estilo rugby en tonos celeste y negro', 16990.00, true, 2, 10, '/uploads/Producto-13.png'),
+('Vestido floral retro', 'Vestido corto de verano, estampado colorido con lazos laterales', 18990.00, true, 2, 8, '/uploads/Producto-4.png'),
+
+-- Niños (3)
+('Vestido blanco infantil', 'Vestido de encaje blanco, elegante para ocasiones especiales', 15990.00, true, 3, 10, '/uploads/Producto-15.png'),
+('Vestido con estampado de ciervos', 'Vestido satinado celeste con estampado infantil de ciervos', 14990.00, true, 3, 9, '/uploads/Producto-1.png'),
+
+-- Accesorios (4)
+('Aros dorados trenzados', 'Aros grandes color dorado con diseño trenzado', 7990.00, true, 4, 15, '/uploads/Producto-14.png'),
+('Aros mariposa dorada', 'Aros metálicos con forma de mariposa, color oro', 6990.00, true, 4, 18, '/uploads/Producto-2.png'),
+('Aros cítricos', 'Aros colgantes con diseño de rodajas de limón y lima', 9990.00, true, 4, 12, '/uploads/Producto-3.png');
 
 -- ===========================================
 -- USUARIO ADMINISTRADOR POR DEFECTO

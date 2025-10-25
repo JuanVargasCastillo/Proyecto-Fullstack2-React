@@ -120,7 +120,7 @@ export default function Dashboard() {
             onClick={handleNavigateToInventario}
           >
             <i className="bi bi-receipt me-2"></i>
-            🧾 Gestionar Productos
+            Gestionar Productos
           </button>
         </div>
         <div className="col-12 col-sm-6 col-md-4 col-lg-3">
@@ -129,7 +129,7 @@ export default function Dashboard() {
             onClick={handleNavigateToUsuarios}
           >
             <i className="bi bi-person-gear me-2"></i>
-            👤 Gestionar Usuarios
+            Gestionar Usuarios
           </button>
         </div>
       </div>

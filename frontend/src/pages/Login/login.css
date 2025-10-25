@@ -43,8 +43,8 @@
   margin-bottom: 16px;
 }
 .brand-logo {
-  width: 72px;
-  height: 72px;
+  width: 150px; /* aumentado a ~150px */
+  height: auto; /* mantener proporciones */
   object-fit: contain;
 }
 .brand-title {
