@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
-import axios from 'axios';
+import { login as loginApi } from '../../services/auth';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -66,16 +66,9 @@ export default function Login() {
     }
 
     try {
-      const resp = await axios.post('http://localhost:8080/api/auth/login', {
-        correo: trimmedEmail,
-        password: trimmedPassword,
-      }, {
-        headers: { 'Content-Type': 'application/json' },
-        withCredentials: false,
-      });
-
-      // 200 OK
-      const user = resp?.data || { email: trimmedEmail };
+      const data = await loginApi(trimmedEmail, trimmedPassword);
+      // Respuesta de backend: LoginResponseDTO con token (Bearer <jwt>)
+      const user = data || { email: trimmedEmail };
       localStorage.setItem('usuarioLogueado', JSON.stringify(user));
       localStorage.setItem('user', JSON.stringify(user));
 
@@ -83,7 +76,8 @@ export default function Login() {
       window.location.href = '/dashboard';
       // navigate('/dashboard'); // alternativa SPA si tu AuthContext se actualiza sin recargar
     } catch (error) {
-      if (error?.response?.status === 401) {
+      const msg = error?.message || '';
+      if (msg.includes('Credenciales incorrectas') || msg.includes('401')) {
         setErrorGeneral('Correo o contraseña incorrectos ❌');
       } else {
         setErrorGeneral('Error al conectar con el servidor.');
