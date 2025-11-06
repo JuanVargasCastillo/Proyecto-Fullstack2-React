@@ -3,6 +3,7 @@ package com.tiendavirtual.projectbackend.controllers;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.tiendavirtual.projectbackend.entities.Users;
@@ -48,6 +49,7 @@ public class UsersRestController {
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Listado obtenido")
     })
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @GetMapping
     public ResponseEntity<List<Users>> listarUsers() {
         return ResponseEntity.ok(usersService.listarTodos());

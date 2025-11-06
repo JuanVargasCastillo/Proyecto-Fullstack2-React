@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.tiendavirtual.projectbackend.entities.Users;
 import com.tiendavirtual.projectbackend.repositories.UsersRepository;
 import com.tiendavirtual.projectbackend.dto.UserUpdateRequest;
+import java.util.Optional;
 
 @Service
 public class UsersService {
@@ -33,6 +34,11 @@ public class UsersService {
 
     public List<Users> listarTodos() {
         return (List<Users>) usersRepository.findAll();
+    }
+
+    // Búsqueda por email para integración con autenticación JWT
+    public Optional<Users> findByEmail(String email) {
+        return usersRepository.findByEmail(email);
     }
 
     public Users actualizar(Long id, UserUpdateRequest request) {
