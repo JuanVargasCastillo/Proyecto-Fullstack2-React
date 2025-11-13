@@ -71,17 +71,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Rol rol = user.getRol();
             String roleName = rol != null ? "ROLE_" + rol.name() : "ROLE_USER";
 
-            // Agrega ambas variantes de la autoridad para máxima compatibilidad
-            java.util.List<org.springframework.security.core.GrantedAuthority> authorities = new java.util.ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority(roleName));
-            if (rol != null) {
-                authorities.add(new SimpleGrantedAuthority(rol.name()));
-            }
-
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     user,
                     null,
-                    authorities
+                    Collections.singletonList(new SimpleGrantedAuthority(roleName))
             );
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
