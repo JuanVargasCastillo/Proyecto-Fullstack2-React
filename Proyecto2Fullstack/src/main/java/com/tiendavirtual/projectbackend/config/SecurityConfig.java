@@ -38,6 +38,16 @@ public class SecurityConfig {
                     "/v3/api-docs/**",
                     "/api-docs/**"
                 ).permitAll()
+
+                // 🔥 Rutas públicas o protegidas para CLIENTE
+                .requestMatchers(
+                    "/api/carrito/**",
+                    "/api/boletas/**"
+                ).authenticated()
+
+                // (Opcional) si quieres dejar las categorías públicas:
+                // .requestMatchers("/api/productos/**", "/api/categorias/**").permitAll()
+
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

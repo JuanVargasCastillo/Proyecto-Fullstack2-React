@@ -52,7 +52,8 @@ public class AuthController {
             return ResponseEntity.status(401).body(java.util.Map.of("error", "Credenciales incorrectas"));
         }
         String token = jwtTokenProvider.generateToken(user.getEmail(), user.getRol());
-        String bearerToken = "Bearer " + token;
+        // Retornar SOLO el JWT sin prefijo "Bearer " para evitar encabezados duplicados
+        String bearerToken = token;
         LoginResponseDTO response = new LoginResponseDTO(
             user.getId(),
             user.getNombre(),

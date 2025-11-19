@@ -45,6 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         String authHeader = request.getHeader("Authorization");
+        log.debug("Authorization header recibido: {}", authHeader);
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             log.debug("Authorization header ausente o sin formato Bearer");
             filterChain.doFilter(request, response);
@@ -52,9 +53,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         String token = authHeader.substring(7);
-        if (!tokenProvider.validateToken(token)) {
-            log.info("Token inválido o expirado; continúa sin autenticación");
-            filterChain.doFilter(request, response);
+        try {
+            if (!tokenProvider.validateToken(token)) {
+                log.error("JWT rechazado: {}", token);
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inválido o expirado");
+                return;
+            }
+        } catch (Exception e) {
+            log.error("JWT rechazado: {}", token);
+            log.error("Motivo: {}", e.toString());
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inválido o expirado");
             return;
         }
 
@@ -70,11 +78,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Users user = optUser.get();
             Rol rol = user.getRol();
             String roleName = rol != null ? "ROLE_" + rol.name() : "ROLE_USER";
+            java.util.List<SimpleGrantedAuthority> authorities;
+            if (rol != null) {
+                authorities = java.util.Arrays.asList(
+                        new SimpleGrantedAuthority(roleName),
+                        new SimpleGrantedAuthority(rol.name())
+                );
+            } else {
+                authorities = java.util.Collections.singletonList(new SimpleGrantedAuthority(roleName));
+            }
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     user,
                     null,
-                    Collections.singletonList(new SimpleGrantedAuthority(roleName))
+                    authorities
             );
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
