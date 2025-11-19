@@ -10,6 +10,8 @@ import java.util.Date;
 import javax.crypto.SecretKey;
 
 import com.tiendavirtual.projectbackend.enums.Rol;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -37,6 +39,8 @@ public class JwtTokenProvider {
 
     private final SecretKey secretKey;
     private final JwtParser jwtParser;
+
+    private static final Logger log = LoggerFactory.getLogger(JwtTokenProvider.class);
 
     public JwtTokenProvider() {
         this.secretKey = buildHmacKey256(SECRET_PHRASE);
@@ -68,14 +72,19 @@ public class JwtTokenProvider {
             jwtParser.parseSignedClaims(token);
             return true;
         } catch (ExpiredJwtException e) {
+            log.error("validateToken() rechazó JWT por expiración. Motivo: {}", e.toString());
             return false; // expirado
         } catch (MalformedJwtException e) {
+            log.error("validateToken() rechazó JWT por malformación. Motivo: {}", e.toString());
             return false; // mal formado
         } catch (UnsupportedJwtException e) {
+            log.error("validateToken() rechazó JWT por formato no soportado. Motivo: {}", e.toString());
             return false; // no soportado
         } catch (SignatureException e) {
+            log.error("validateToken() rechazó JWT por firma inválida. Motivo: {}", e.toString());
             return false; // firma inválida
         } catch (IllegalArgumentException e) {
+            log.error("validateToken() rechazó JWT por argumento ilegal. Motivo: {}", e.toString());
             return false; // token vacío o nulo
         }
     }

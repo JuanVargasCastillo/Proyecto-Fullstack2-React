@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.tiendavirtual.projectbackend.services.UsersServiceTest
 -------------------------------------------------------------------------------
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.252 s -- in com.tiendavirtual.projectbackend.services.UsersServiceTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.282 s -- in com.tiendavirtual.projectbackend.services.UsersServiceTest
