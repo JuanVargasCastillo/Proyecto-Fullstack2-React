@@ -3,8 +3,9 @@ import AdminNavbar from './AdminNavbar'
 import AdminSidebar from './AdminSidebar'
 import AdminFooter from './AdminFooter'
 import { useAuth } from '../../context/AuthContext'
+import { Outlet } from 'react-router-dom'
 
-export default function AdminLayout({ children }) {
+export default function AdminLayout() {
   const { user } = useAuth()
   const nombre = user?.nombre || 'Administrador'
 
@@ -20,7 +21,7 @@ export default function AdminLayout({ children }) {
       </div>
 
       <main className="container my-3 flex-grow-1">
-        {children}
+        <Outlet />
       </main>
 
       <AdminFooter />

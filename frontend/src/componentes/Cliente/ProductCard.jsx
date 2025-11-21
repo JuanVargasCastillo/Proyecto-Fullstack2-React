@@ -2,7 +2,8 @@ import { useCart } from '../../context/CartContext'
 
 export default function ProductCard({ producto }) {
   const { add } = useCart()
-  const img = producto?.imagenUrl || ''
+  const base = import.meta.env.VITE_API_URL || 'http://localhost:8080'
+  const img = producto?.imagenUrl ? base + producto.imagenUrl : ''
   const precio = Number(producto?.precio || 0)
 
   return (

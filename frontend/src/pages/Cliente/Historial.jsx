@@ -1,4 +1,3 @@
-import ClientLayout from '../../componentes/Cliente/ClientLayout'
 import { useEffect, useState } from 'react'
 import { listarBoletas } from '../../services/boletas'
 
@@ -11,7 +10,6 @@ export default function Historial() {
   }, [])
 
   return (
-    <ClientLayout>
       <div className="container my-3">
         <h5 className="mb-3">Historial de Compras</h5>
         {loading ? (
@@ -26,6 +24,5 @@ export default function Historial() {
           </div>
         )}
       </div>
-    </ClientLayout>
   )
 }

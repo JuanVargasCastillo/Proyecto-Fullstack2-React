@@ -24,7 +24,7 @@ export default function AdminNavbar() {
         </button>
 
         {/* Logo a la izquierda */}
-        <Link className="navbar-brand d-flex align-items-center" to="/dashboard">
+        <Link className="navbar-brand d-flex align-items-center" to="/admin">
           <img src="/img/logo2.png" alt="Green Bunny Store" />
         </Link>
 

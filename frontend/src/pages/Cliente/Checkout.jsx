@@ -1,4 +1,3 @@
-import ClientLayout from '../../componentes/Cliente/ClientLayout'
 import { useCart } from '../../context/CartContext'
 import { useNavigate } from 'react-router-dom'
 import { generarBoleta } from '../../services/boletas'
@@ -15,7 +14,6 @@ export default function Checkout() {
   }
 
   return (
-    <ClientLayout>
       <div className="container my-3">
         <div className="row">
           <div className="col-md-8">
@@ -42,6 +40,5 @@ export default function Checkout() {
           </div>
         </div>
       </div>
-    </ClientLayout>
   )
 }
