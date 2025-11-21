@@ -29,15 +29,26 @@ function App() {
           {/* eliminado Navbar global; AdminLayout manejará la navegación */}
           <main className="flex-grow-1">
             <Routes>
-              <Route path="/" element={<ClientLayout><HomeCliente /></ClientLayout>} />
               <Route path="/login" element={<Login />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/boleta/:id" element={<Boleta />} />
-              <Route path="/historial" element={<Historial />} />
-              <Route path="/inventario" element={<ProtectedRoute><AdminLayout><Inventario /></AdminLayout></ProtectedRoute>} />
-              <Route path="/dashboard" element={<ProtectedRoute><AdminLayout><Dashboard /></AdminLayout></ProtectedRoute>} />
-              <Route path="/usuarios" element={<ProtectedRoute><AdminLayout><Usuarios /></AdminLayout></ProtectedRoute>} />
-              <Route path="*" element={<Navigate to="/" replace />} />
+
+              {/* Cliente protegido por rol */}
+              <Route element={<ProtectedRoute allowedRoles={["CLIENTE"]}><ClientLayout /></ProtectedRoute>}>
+                <Route path="/" element={<HomeCliente />} />
+                <Route path="/producto/:id" element={<div className="container">Detalle de producto</div>} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/boleta/:id" element={<Boleta />} />
+                <Route path="/historial" element={<Historial />} />
+              </Route>
+
+              {/* Admin protegido por rol */}
+              <Route path="/admin" element={<ProtectedRoute allowedRoles={["SUPER_ADMIN"]}><AdminLayout /></ProtectedRoute>}>
+                <Route index element={<Dashboard />} />
+                <Route path="inventario" element={<Inventario />} />
+                <Route path="usuarios" element={<Usuarios />} />
+              </Route>
+
+              {/* No autenticado → /login */}
+              <Route path="*" element={<Navigate to="/login" replace />} />
             </Routes>
           </main>
           {/* eliminado Footer global; AdminLayout manejará estructura visual */}

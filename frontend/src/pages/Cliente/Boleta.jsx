@@ -1,4 +1,3 @@
-import ClientLayout from '../../componentes/Cliente/ClientLayout'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { obtenerBoleta } from '../../services/boletas'
@@ -12,7 +11,6 @@ export default function Boleta() {
   }, [id])
 
   return (
-    <ClientLayout>
       <div className="container my-3">
         {!boleta ? (
           <div className="text-center my-4"><div className="spinner-border text-success" role="status"></div></div>
@@ -33,6 +31,5 @@ export default function Boleta() {
           </div>
         )}
       </div>
-    </ClientLayout>
   )
 }

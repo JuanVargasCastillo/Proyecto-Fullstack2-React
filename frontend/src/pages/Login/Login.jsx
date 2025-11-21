@@ -79,8 +79,12 @@ export default function Login() {
       localStorage.setItem('usuarioLogueado', JSON.stringify(user));
       localStorage.setItem('user', JSON.stringify(user));
 
-      // Redireccionar al dashboard
-      window.location.href = '/dashboard';
+      const rol = String(user?.rol || '').toUpperCase();
+      if (rol === 'SUPER_ADMIN') {
+        window.location.href = '/admin';
+      } else {
+        window.location.href = '/';
+      }
       // navigate('/dashboard'); // alternativa SPA si tu AuthContext se actualiza sin recargar
     } catch (error) {
       if (error?.response?.status === 401) {
