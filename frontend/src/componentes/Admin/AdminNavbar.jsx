@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import CartButton from '../Cliente/CartButton'
 
 export default function AdminNavbar() {
   const { user, logout } = useAuth()
@@ -32,17 +33,23 @@ export default function AdminNavbar() {
           <h5 className="mb-0 titulo-admin">Panel Administrador</h5>
         </div>
 
-        {/* Icono de notificaciones y botón de cerrar sesión */}
+        {/* Icono de notificaciones, carrito y acciones de sesión */}
         <div className="d-flex align-items-center gap-2 ms-auto">
           <button className="btn btn-notificacion position-relative d-none d-sm-inline-flex" type="button" aria-label="Notificaciones">
             <i className="bi bi-bell"></i>
             <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">3</span>
           </button>
 
-          <button className="btn btn-cerrar-sesion" onClick={handleLogout}>
-            <i className="bi bi-box-arrow-right me-1"></i>
-            Cerrar Sesión
-          </button>
+          <CartButton />
+
+          {user ? (
+            <button className="btn btn-cerrar-sesion" onClick={handleLogout}>
+              <i className="bi bi-box-arrow-right me-1"></i>
+              Cerrar Sesión
+            </button>
+          ) : (
+            <Link className="btn btn-outline-primary" to="/login">Iniciar Sesión</Link>
+          )}
         </div>
       </div>
     </nav>

@@ -8,6 +8,20 @@ const api = axios.create({
   },
 })
 
+api.interceptors.request.use((config) => {
+  try {
+    const raw = localStorage.getItem('user')
+    if (raw) {
+      const u = JSON.parse(raw)
+      const t = u?.token
+      if (t) {
+        config.headers.Authorization = `Bearer ${t}`
+      }
+    }
+  } catch {}
+  return config
+})
+
 api.interceptors.response.use(
   (res) => res,
   (err) => {
