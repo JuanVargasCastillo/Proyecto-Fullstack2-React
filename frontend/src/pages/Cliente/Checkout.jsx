@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom'
 import { generarBoleta } from '../../services/boletas'
 
 export default function Checkout() {
-  const { cart } = useCart()
+  const { cart, empty, refresh } = useCart()
   const navigate = useNavigate()
 
   async function pagar() {
     try {
       const b = await generarBoleta()
+      await empty()
+      await refresh()
       navigate(`/boleta/${b.id}`)
     } catch {}
   }
