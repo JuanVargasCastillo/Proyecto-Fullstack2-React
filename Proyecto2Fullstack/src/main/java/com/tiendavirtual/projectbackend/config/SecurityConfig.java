@@ -39,14 +39,17 @@ public class SecurityConfig {
                     "/api-docs/**"
                 ).permitAll()
 
-                // 🔥 Rutas públicas o protegidas para CLIENTE
+                // 🔥 Rutas públicas del cliente
+                .requestMatchers(
+                    "/api/productos/**",
+                    "/api/categorias/**"
+                ).permitAll()
+
+                // 🔥 Rutas protegidas para CLIENTE autenticado
                 .requestMatchers(
                     "/api/carrito/**",
                     "/api/boletas/**"
                 ).authenticated()
-
-                // (Opcional) si quieres dejar las categorías públicas:
-                // .requestMatchers("/api/productos/**", "/api/categorias/**").permitAll()
 
                 .anyRequest().authenticated()
             )

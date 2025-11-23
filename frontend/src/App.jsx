@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import AdminLayout from './componentes/Admin/AdminLayout'
 import { CartProvider } from './context/CartContext'
+import { SearchProvider } from './context/SearchContext'
 import ClientLayout from './componentes/Cliente/ClientLayout'
 import HomeCliente from './pages/Cliente/HomeCliente'
 import Checkout from './pages/Cliente/Checkout'
@@ -25,16 +26,21 @@ function App() {
     <AuthProvider>
       <ToastProvider>
         <CartProvider>
+        <SearchProvider>
         <div className="d-flex flex-column min-vh-100">
           {/* eliminado Navbar global; AdminLayout manejará la navegación */}
           <main className="flex-grow-1">
             <Routes>
               <Route path="/login" element={<Login />} />
 
-              {/* Cliente protegido por rol */}
-              <Route element={<ProtectedRoute allowedRoles={["CLIENTE"]}><ClientLayout /></ProtectedRoute>}>
+              {/* Cliente público: Home y detalle accesibles sin sesión */}
+              <Route element={<ClientLayout />}>
                 <Route path="/" element={<HomeCliente />} />
                 <Route path="/producto/:id" element={<div className="container">Detalle de producto</div>} />
+              </Route>
+
+              {/* Cliente protegido: rutas que requieren sesión CLIENTE */}
+              <Route element={<ProtectedRoute allowedRoles={["CLIENTE"]}><ClientLayout /></ProtectedRoute>}>
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/boleta/:id" element={<Boleta />} />
                 <Route path="/historial" element={<Historial />} />
@@ -53,6 +59,7 @@ function App() {
           </main>
           {/* eliminado Footer global; AdminLayout manejará estructura visual */}
         </div>
+        </SearchProvider>
         </CartProvider>
       </ToastProvider>
     </AuthProvider>

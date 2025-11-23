@@ -11,7 +11,7 @@ export default function AdminLayout() {
 
   return (
     <div className="admin-layout d-flex flex-column min-vh-100">
-      <AdminNavbar />
+      <AdminNavbar showAdminTitle={true} showSearch={false} />
       <AdminSidebar />
 
       <div className="bg-success text-white text-center py-2 gb-welcome">
