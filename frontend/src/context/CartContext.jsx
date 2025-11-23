@@ -13,43 +13,67 @@ export function CartProvider({ children }) {
     try {
       const c = await getCarrito()
       setCart(c)
+    } catch (e) {
+      // Ignorar 401 si no hay sesión
     } finally {
       setLoading(false)
     }
   }
 
   async function add(productoId, cantidad = 1) {
-    await addItem(productoId, cantidad)
-    await refresh()
-    setOpen(true)
+    try {
+      const data = await addItem(productoId, cantidad)
+      if (data) {
+        setCart(data)
+        setOpen(true)
+      }
+    } catch (e) {
+      window.location.href = '/login'
+    }
   }
 
   async function inc(itemId) {
     const item = cart.items.find((i) => i.id === itemId)
     if (!item) return
-    await updateItem(itemId, (item.cantidad || 0) + 1)
-    await refresh()
+    try {
+      const data = await updateItem(itemId, (item.cantidad || 0) + 1)
+      if (data) setCart(data)
+    } catch (e) {
+      window.location.href = '/login'
+    }
   }
 
   async function dec(itemId) {
     const item = cart.items.find((i) => i.id === itemId)
     if (!item) return
     const next = (item.cantidad || 0) - 1
-    await updateItem(itemId, next < 0 ? 0 : next)
-    await refresh()
+    try {
+      const data = await updateItem(itemId, next < 0 ? 0 : next)
+      if (data) setCart(data)
+    } catch (e) {
+      window.location.href = '/login'
+    }
   }
 
   async function remove(itemId) {
-    await removeItem(itemId)
-    await refresh()
+    try {
+      const data = await removeItem(itemId)
+      if (data) setCart(data)
+    } catch (e) {
+      window.location.href = '/login'
+    }
   }
 
   async function empty() {
-    await emptyCart()
-    await refresh()
+    try {
+      const data = await emptyCart()
+      if (data) setCart(data)
+    } catch (e) {
+      window.location.href = '/login'
+    }
   }
 
-  function openDrawer() { setOpen(true) }
+  async function openDrawer() { await refresh(); setOpen(true) }
   function closeDrawer() { setOpen(false) }
 
   useEffect(() => { refresh() }, [])
