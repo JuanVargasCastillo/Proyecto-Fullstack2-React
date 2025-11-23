@@ -5,20 +5,20 @@ export default function Carousel() {
         <div className="carousel-inner">
           <div className="carousel-item active">
             <picture>
-              <source media="(max-width: 1024px)" srcSet="/img/logoInicial.png" />
-              <img src="/img/logoInicial.png" className="d-block w-100" alt="Promo 1" />
+              <source media="(max-width: 1024px)" srcSet="/img/eco.png" />
+              <img src="/img/eco.png" className="d-block w-100" alt="Promo 1" />
             </picture>
           </div>
           <div className="carousel-item">
             <picture>
-              <source media="(max-width: 1024px)" srcSet="/img/logo2.png" />
-              <img src="/img/logo2.png" className="d-block w-100" alt="Promo 2" />
+              <source media="(max-width: 1024px)" srcSet="/img/eco2.png" />
+              <img src="/img/eco2.png" className="d-block w-100" alt="Promo 2" />
             </picture>
           </div>
           <div className="carousel-item">
             <picture>
-              <source media="(max-width: 1024px)" srcSet="/img/logo3.png" />
-              <img src="/img/logo3.png" className="d-block w-100" alt="Promo 3" />
+              <source media="(max-width: 1024px)" srcSet="/img/eco3.png" />
+              <img src="/img/eco3.png" className="d-block w-100" alt="Promo 3" />
             </picture>
           </div>
         </div>

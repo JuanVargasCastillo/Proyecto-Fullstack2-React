@@ -42,11 +42,11 @@ export default function Dashboard() {
   }, [show])
 
   const handleNavigateToInventario = () => {
-    navigate('/inventario')
+    navigate('/admin/inventario')
   }
 
   const handleNavigateToUsuarios = () => {
-    navigate('/usuarios')
+    navigate('/admin/usuarios')
   }
 
   if (loading) {

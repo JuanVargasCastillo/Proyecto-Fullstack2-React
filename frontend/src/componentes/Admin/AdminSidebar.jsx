@@ -61,13 +61,13 @@ export default function AdminSidebar() {
       <div className="offcanvas-body gb-admin-sidebar">
         <ul className="list-group list-group-flush gb-menu-list">
           <li className="list-group-item">
-            <button type="button" className="gb-menu-item btn btn-link" onClick={() => handleNavigate('/dashboard')}>
+            <button type="button" className="gb-menu-item btn btn-link" onClick={() => handleNavigate('/admin')}>
               <i className="bi bi-house gb-menu-icon" aria-hidden="true"></i>
               <span>Inicio</span>
             </button>
           </li>
           <li className="list-group-item">
-            <button type="button" className="gb-menu-item btn btn-link" onClick={() => handleNavigate('/inventario')}>
+            <button type="button" className="gb-menu-item btn btn-link" onClick={() => handleNavigate('/admin/inventario')}>
               <i className="bi bi-box-seam gb-menu-icon" aria-hidden="true"></i>
               <span>Productos</span>
             </button>
@@ -87,7 +87,7 @@ export default function AdminSidebar() {
           </li>
           )}
           <li className="list-group-item">
-            <button type="button" className="gb-menu-item btn btn-link" onClick={() => handleNavigate('/usuarios')}>
+            <button type="button" className="gb-menu-item btn btn-link" onClick={() => handleNavigate('/admin/usuarios')}>
               <i className="bi bi-people gb-menu-icon" aria-hidden="true"></i>
               <span>Usuarios</span>
             </button>
