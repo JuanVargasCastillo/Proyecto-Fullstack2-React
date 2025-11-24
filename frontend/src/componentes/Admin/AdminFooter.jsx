@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 export default function AdminFooter() {
   return (
     <footer className="footer bg-footer pt-4 mt-5">
@@ -12,8 +14,8 @@ export default function AdminFooter() {
           <div className="col-md-4 mb-3">
             <h5 className="footer-title">Enlaces</h5>
             <ul className="list-unstyled">
-              <li><a href="#" className="footer-link">Nosotros</a></li>
-              <li><a href="#" className="footer-link">Blog</a></li>
+              <li><Link to="/nosotros" className="footer-link">Nosotros</Link></li>
+              <li><Link to="/blog" className="footer-link">Blog</Link></li>
               <li><a href="#" className="footer-link">Contáctanos</a></li>
             </ul>
           </div>

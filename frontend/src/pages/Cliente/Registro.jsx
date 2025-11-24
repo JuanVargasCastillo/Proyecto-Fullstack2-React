@@ -30,9 +30,9 @@ export default function Registro() {
   const comunas = useMemo(() => REGIONES_Y_COMUNAS[region] || [], [region])
 
   function getPwdStrength(p) {
-    if (!p || p.length < 8) return { text: 'Débil', cls: 'pwd-weak' }
-    const hasNumber = /\d/.test(p)
-    if (hasNumber) return { text: 'Fuerte', cls: 'pwd-strong' }
+    if (!p || p.length <= 8) return { text: 'Débil', cls: 'pwd-weak' }
+    const hasUpper = /[A-Z]/.test(p)
+    if (hasUpper) return { text: 'Fuerte', cls: 'pwd-strong' }
     return { text: 'Media', cls: 'pwd-medium' }
   }
 
@@ -133,9 +133,9 @@ export default function Registro() {
               <input type="password" className="form-control" id="confirmPass" value={confirm} onChange={(e) => onConfirmChange(e.target.value)} required />
               {confirm ? (
                 password && confirm === password ? (
-                  <div className="confirm-feedback mt-1"><span className="match-icon match-ok">✔</span></div>
+                  <div className="confirm-feedback mt-1"><i className="bi bi-check-circle-fill confirm-icon ok"></i></div>
                 ) : (
-                  <div className="confirm-feedback mt-1"><span className="match-icon match-bad">❌</span></div>
+                  <div className="confirm-feedback mt-1"><i className="bi bi-x-circle-fill confirm-icon bad"></i></div>
                 )
               ) : null}
             </div>

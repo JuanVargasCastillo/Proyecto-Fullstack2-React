@@ -73,6 +73,6 @@ body {
 .pwd-strong-dot { background-color: #198754; }
 
 .confirm-feedback { min-height: 18px; }
-.match-icon { font-size: 0.95rem; line-height: 1; }
-.match-ok { color: #198754; }
-.match-bad { color: #dc3545; }
+.confirm-icon { font-size: 1.1rem; line-height: 1; }
+.confirm-icon.ok { color: #198754; }
+.confirm-icon.bad { color: #dc3545; }
