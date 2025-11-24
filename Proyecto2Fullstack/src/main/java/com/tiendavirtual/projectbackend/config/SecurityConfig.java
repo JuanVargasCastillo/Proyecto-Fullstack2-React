@@ -36,7 +36,8 @@ public class SecurityConfig {
                     "/swagger-ui.html",
                     "/swagger-ui/**",
                     "/v3/api-docs/**",
-                    "/api-docs/**"
+                    "/api-docs/**",
+                    "/api/users/admin/crear-usuario"
                 ).permitAll()
 
                 // 🔥 Rutas públicas del cliente
