@@ -15,6 +15,7 @@ import Blog from './pages/Cliente/Blog'
 import Nosotros from './pages/Cliente/Nosotros'
 import Contacto from './pages/Cliente/Contacto'
 import Categorias from './componentes/Cliente/Categorias'
+import Carrito from './pages/Cliente/Carrito'
 import Inventario from './pages/Inventario/Inventario'
 import Dashboard from './pages/Dashboard/Dashboard'
 import Usuarios from './pages/Usuarios/Usuarios'
@@ -39,7 +40,7 @@ function App() {
               <Route path="/login" element={<Login />} />
 
               {/* Cliente público: Home y detalle accesibles sin sesión */}
-              <Route element={<ClientLayout />}>
+              <Route element={<ClientLayout />}> 
                 <Route path="/" element={<HomeCliente />} />
                 <Route path="/producto/:id" element={<div className="container">Detalle de producto</div>} />
                 <Route path="/registro" element={<Registro />} />
@@ -47,6 +48,7 @@ function App() {
                 <Route path="/nosotros" element={<Nosotros />} />
                 <Route path="/contacto" element={<Contacto />} />
                 <Route path="/categorias" element={<Categorias />} />
+                <Route path="/carrito" element={<Carrito />} />
               </Route>
 
               {/* Cliente protegido: rutas que requieren sesión CLIENTE */}

@@ -16,7 +16,7 @@ export function ToastProvider({ children }) {
   return (
     <ToastContext.Provider value={{ show }}>
       {children}
-      <div className="position-fixed top-0 end-0 p-3" style={{ zIndex: 1055 }}>
+      <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 1055 }}>
         {toasts.map((t) => (
           <div key={t.id} className={`alert alert-${t.variant} shadow`} role="alert">
             {t.message}
