@@ -15,6 +15,11 @@ export async function listarBoletas() {
   return data
 }
 
+export async function listarBoletasAdmin() {
+  const { data } = await api.get('/api/admin/boletas')
+  return data
+}
+
 export async function obtenerBoleta(id) {
   const { data } = await api.get(`/api/boletas/${id}`)
   return data

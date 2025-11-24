@@ -49,6 +49,10 @@ export default function Dashboard() {
     navigate('/admin/usuarios')
   }
 
+  const handleNavigateToBoletas = () => {
+    navigate('/admin/boletas')
+  }
+
   if (loading) {
     return (
       <div className="container-fluid py-4">
@@ -130,6 +134,15 @@ export default function Dashboard() {
           >
             <i className="bi bi-person-gear me-2"></i>
             Gestionar Usuarios
+          </button>
+        </div>
+        <div className="col-12 col-sm-6 col-md-4 col-lg-3">
+          <button 
+            className="btn dashboard-btn dashboard-btn-primary w-100"
+            onClick={handleNavigateToBoletas}
+          >
+            <i className="bi bi-journal-text me-2"></i>
+            Historial de ventas
           </button>
         </div>
       </div>

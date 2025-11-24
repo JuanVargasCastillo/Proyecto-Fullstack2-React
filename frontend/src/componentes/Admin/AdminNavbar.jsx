@@ -65,20 +65,19 @@ export default function AdminNavbar({ showAdminTitle = true, showSearch = false 
           <CartButton />
 
           {user ? (
-            <button className="btn btn-cerrar-sesion" onClick={handleLogout}>
-              <i className="bi bi-box-arrow-right me-1"></i>
-              Cerrar Sesión
-            </button>
+            <>
+              <Link className="btn btn-rosa-pastel" to="/historial">Historial de compras</Link>
+              <button className="btn btn-cerrar-sesion" onClick={handleLogout}>
+                <i className="bi bi-box-arrow-right me-1"></i>
+                Cerrar Sesión
+              </button>
+            </>
           ) : (
             <>
               <Link className="btn btn-outline-primary me-2" to="/login">Iniciar Sesión</Link>
               <Link className="btn btn-success" to="/registro">Registrarse</Link>
             </>
           )}
-
-          {user ? (
-            <Link className="btn btn-outline-primary" to="/historial">Historial de compras</Link>
-          ) : null}
         </div>
       </div>
     </nav>
