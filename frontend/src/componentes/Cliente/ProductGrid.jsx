@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom'
 import ProductCard from './ProductCard'
 import { useSearch } from '../../context/SearchContext'
 
-export default function ProductGrid() {
+export default function ProductGrid({ title = 'Productos Destacados' }) {
   const [productos, setProductos] = useState([])
   const [loading, setLoading] = useState(true)
   const location = useLocation()
@@ -29,7 +29,7 @@ export default function ProductGrid() {
 
   return (
     <div className="container">
-      <h2 className="titulo">Productos Destacados</h2>
+      <h2 className="titulo">{title}</h2>
       {loading ? (
         <div className="text-center my-4"><div className="spinner-border text-success" role="status"></div></div>
       ) : (

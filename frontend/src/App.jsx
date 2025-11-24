@@ -14,6 +14,7 @@ import Registro from './pages/Cliente/Registro'
 import Blog from './pages/Cliente/Blog'
 import Nosotros from './pages/Cliente/Nosotros'
 import Contacto from './pages/Cliente/Contacto'
+import Categorias from './componentes/Cliente/Categorias'
 import Inventario from './pages/Inventario/Inventario'
 import Dashboard from './pages/Dashboard/Dashboard'
 import Usuarios from './pages/Usuarios/Usuarios'
@@ -45,6 +46,7 @@ function App() {
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/nosotros" element={<Nosotros />} />
                 <Route path="/contacto" element={<Contacto />} />
+                <Route path="/categorias" element={<Categorias />} />
               </Route>
 
               {/* Cliente protegido: rutas que requieren sesión CLIENTE */}
