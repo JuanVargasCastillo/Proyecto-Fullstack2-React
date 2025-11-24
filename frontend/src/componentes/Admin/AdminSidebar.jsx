@@ -92,6 +92,12 @@ export default function AdminSidebar() {
               <span>Usuarios</span>
             </button>
           </li>
+          <li className="list-group-item">
+            <button type="button" className="gb-menu-item btn btn-link" onClick={() => handleNavigate('/admin/boletas')}>
+              <i className="bi bi-journal-text gb-menu-icon" aria-hidden="true"></i>
+              <span>Historial de ventas</span>
+            </button>
+          </li>
           <li className="list-group-item gb-bottom-start">
             <div className="gb-divider"></div>
           </li>
