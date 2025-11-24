@@ -77,7 +77,7 @@ export default function AdminNavbar({ showAdminTitle = true, showSearch = false 
           )}
 
           {user ? (
-            <Link className="btn btn-outline-light" to="/historial">Historial de compras</Link>
+            <Link className="btn btn-outline-primary" to="/historial">Historial de compras</Link>
           ) : null}
         </div>
       </div>

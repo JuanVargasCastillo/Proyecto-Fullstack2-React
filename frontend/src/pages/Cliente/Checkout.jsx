@@ -15,7 +15,7 @@ export default function Checkout() {
     'Biobío': ['Concepción', 'Talcahuano', 'Chiguayante', 'San Pedro de la Paz'],
     'Antofagasta': ['Antofagasta', 'Calama', 'Tocopilla'],
   }
-  const emailRegex = /^[^\s@]+@(gmail\.com|duocuc\.cl|profesor\.duoc\.cl)$/
+  const emailRegex = /^[^\s@]+@(gmail\.com|hotmail\.com|duocuc\.cl|duoc\.profesor\.cl)$/
 
   const [form, setForm] = useState({
     nombre: '',

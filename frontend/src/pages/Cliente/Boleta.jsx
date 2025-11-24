@@ -18,6 +18,7 @@ export default function Boleta() {
           <div className="card">
             <div className="card-body">
               <h5 className="mb-3">Boleta #{boleta.correlativo}</h5>
+              <div className="text-muted mb-2">Fecha de compra: {new Date(boleta.creadoEn).toLocaleDateString('es-CL')}</div>
               <div className="d-flex justify-content-between">
                 <span>Subtotal</span>
                 <span className="precio">${new Intl.NumberFormat('es-CL').format(Number(boleta.subtotal || 0))}</span>
