@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
+import { useToast } from '../componentes/shared/ToastProvider'
 import { addItem, emptyCart, getCarrito, removeItem, updateItem } from '../services/carrito'
 
 const CartContext = createContext(null)
@@ -7,13 +8,14 @@ export function CartProvider({ children }) {
   const [cart, setCart] = useState({ carritoId: null, subtotal: 0, items: [] })
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
+  const { show } = useToast()
 
   async function refresh() {
     setLoading(true)
     try {
       const c = await getCarrito()
       setCart(c)
-    } catch (e) {
+    } catch {
       // Ignorar 401 si no hay sesión
     } finally {
       setLoading(false)
@@ -26,9 +28,10 @@ export function CartProvider({ children }) {
       if (data) {
         setCart(data)
         setOpen(true)
+        show('Producto agregado al carrito', 'success')
       }
-    } catch (e) {
-      window.location.href = '/login'
+    } catch {
+      show('Inicia sesión para usar el carrito', 'warning')
     }
   }
 
@@ -38,8 +41,8 @@ export function CartProvider({ children }) {
     try {
       const data = await updateItem(itemId, (item.cantidad || 0) + 1)
       if (data) setCart(data)
-    } catch (e) {
-      window.location.href = '/login'
+    } catch {
+      show('Inicia sesión para usar el carrito', 'warning')
     }
   }
 
@@ -50,17 +53,18 @@ export function CartProvider({ children }) {
     try {
       const data = await updateItem(itemId, next < 0 ? 0 : next)
       if (data) setCart(data)
-    } catch (e) {
-      window.location.href = '/login'
+    } catch {
+      show('Inicia sesión para usar el carrito', 'warning')
     }
   }
 
   async function remove(itemId) {
     try {
-      const data = await removeItem(itemId)
-      if (data) setCart(data)
-    } catch (e) {
-      window.location.href = '/login'
+      await removeItem(itemId)
+      await refresh()
+      show('Producto eliminado', 'success')
+    } catch (err) {
+      show('No se pudo eliminar el producto', 'danger')
     }
   }
 
@@ -68,8 +72,8 @@ export function CartProvider({ children }) {
     try {
       const data = await emptyCart()
       if (data) setCart(data)
-    } catch (e) {
-      window.location.href = '/login'
+    } catch {
+      show('Inicia sesión para usar el carrito', 'warning')
     }
   }
 
