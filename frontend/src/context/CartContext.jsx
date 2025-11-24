@@ -30,8 +30,16 @@ export function CartProvider({ children }) {
         setOpen(true)
         show('Producto agregado al carrito', 'success')
       }
-    } catch {
-      show('Inicia sesión para usar el carrito', 'warning')
+    } catch (err) {
+      const status = err?.status
+      const code = err?.code || (String(err?.message || '').includes('stockInsuficiente') ? 'stockInsuficiente' : '')
+      if (status === 400 && code === 'stockInsuficiente') {
+        show('No hay stock disponible para este producto en este momento.', 'warning')
+      } else if (status === 401 || status === 403) {
+        show('Debes iniciar sesión para usar el carrito.', 'warning')
+      } else {
+        show('No se pudo agregar el producto al carrito', 'danger')
+      }
     }
   }
 
@@ -41,8 +49,16 @@ export function CartProvider({ children }) {
     try {
       const data = await updateItem(itemId, (item.cantidad || 0) + 1)
       if (data) setCart(data)
-    } catch {
-      show('Inicia sesión para usar el carrito', 'warning')
+    } catch (err) {
+      const status = err?.status
+      const code = err?.code || (String(err?.message || '').includes('stockInsuficiente') ? 'stockInsuficiente' : '')
+      if (status === 400 && code === 'stockInsuficiente') {
+        show('No hay stock disponible para este producto en este momento.', 'warning')
+      } else if (status === 401 || status === 403) {
+        show('Debes iniciar sesión para usar el carrito.', 'warning')
+      } else {
+        show('No se pudo actualizar el carrito', 'danger')
+      }
     }
   }
 
@@ -53,8 +69,16 @@ export function CartProvider({ children }) {
     try {
       const data = await updateItem(itemId, next < 0 ? 0 : next)
       if (data) setCart(data)
-    } catch {
-      show('Inicia sesión para usar el carrito', 'warning')
+    } catch (err) {
+      const status = err?.status
+      const code = err?.code || (String(err?.message || '').includes('stockInsuficiente') ? 'stockInsuficiente' : '')
+      if (status === 400 && code === 'stockInsuficiente') {
+        show('No hay stock disponible para este producto en este momento.', 'warning')
+      } else if (status === 401 || status === 403) {
+        show('Debes iniciar sesión para usar el carrito.', 'warning')
+      } else {
+        show('No se pudo actualizar el carrito', 'danger')
+      }
     }
   }
 
@@ -63,7 +87,7 @@ export function CartProvider({ children }) {
       await removeItem(itemId)
       await refresh()
       show('Producto eliminado', 'success')
-    } catch (err) {
+    } catch {
       show('No se pudo eliminar el producto', 'danger')
     }
   }
@@ -72,8 +96,13 @@ export function CartProvider({ children }) {
     try {
       const data = await emptyCart()
       if (data) setCart(data)
-    } catch {
-      show('Inicia sesión para usar el carrito', 'warning')
+    } catch (err) {
+      const status = err?.status
+      if (status === 401 || status === 403) {
+        show('Debes iniciar sesión para usar el carrito.', 'warning')
+      } else {
+        show('No se pudo vaciar el carrito', 'danger')
+      }
     }
   }
 
