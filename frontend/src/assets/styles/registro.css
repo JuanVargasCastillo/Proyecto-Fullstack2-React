@@ -1,0 +1,57 @@
+body {
+  background-color: #fff5f9;
+}
+
+#formRegistro {
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  background-color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+#formRegistro .form-control,
+#formRegistro .form-select {
+  border: 2px solid #dddddd;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#formRegistro .form-control:focus,
+#formRegistro .form-select:focus {
+  border-color: #f8a9c4;
+  outline: none;
+  box-shadow: 0 0 10px rgba(248, 169, 196, 0.5);
+}
+
+#formRegistro .btn-registrar {
+  background-color: #f8a9c4;
+  color: #fff;
+  border: none;
+  transition: background-color 0.3s;
+}
+
+#formRegistro .btn-registrar:hover {
+  background-color: #f47ba0;
+}
+
+#formRegistro .btn-limpiar {
+  background-color: transparent;
+  color: #82aa31;
+  border: 1px solid #82aa31;
+  transition: all 0.3s;
+}
+
+#formRegistro .btn-limpiar:hover {
+  background-color: #82aa31;
+  color: #fff;
+}
+
+.titulo-registro {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+  color: #f8a9c4;
+  font-weight: bold;
+}

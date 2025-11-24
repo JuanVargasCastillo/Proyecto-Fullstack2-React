@@ -10,6 +10,7 @@ import HomeCliente from './pages/Cliente/HomeCliente'
 import Checkout from './pages/Cliente/Checkout'
 import Boleta from './pages/Cliente/Boleta'
 import Historial from './pages/Cliente/Historial'
+import Registro from './pages/Cliente/Registro'
 import Inventario from './pages/Inventario/Inventario'
 import Dashboard from './pages/Dashboard/Dashboard'
 import Usuarios from './pages/Usuarios/Usuarios'
@@ -37,6 +38,7 @@ function App() {
               <Route element={<ClientLayout />}>
                 <Route path="/" element={<HomeCliente />} />
                 <Route path="/producto/:id" element={<div className="container">Detalle de producto</div>} />
+                <Route path="/registro" element={<Registro />} />
               </Route>
 
               {/* Cliente protegido: rutas que requieren sesión CLIENTE */}

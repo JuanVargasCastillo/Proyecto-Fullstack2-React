@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.tiendavirtual.projectbackend.entities.Users;
 import com.tiendavirtual.projectbackend.repositories.UsersRepository;
 import com.tiendavirtual.projectbackend.dto.UserUpdateRequest;
+import com.tiendavirtual.projectbackend.enums.Rol;
 import java.util.Optional;
 
 @Service
@@ -21,6 +22,9 @@ public class UsersService {
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public Users crear(Users user) {
+        if (user.getRol() == null) {
+            user.setRol(Rol.CLIENTE);
+        }
         if (StringUtils.hasText(user.getPassword()) && !isBcryptHash(user.getPassword())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }

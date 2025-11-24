@@ -17,7 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.Parameter;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173","http://localhost:5174"})
 @RestController
 @RequestMapping("/api/users")
 public class UsersRestController {
@@ -32,6 +32,16 @@ public class UsersRestController {
     })
     @PostMapping
     public ResponseEntity<Users> crearUser(@Valid @RequestBody Users user) {
+        return ResponseEntity.ok(usersService.crear(user));
+    }
+
+    @Operation(summary = "Crear usuario (registro)", description = "Crea un usuario desde el formulario público. Preparado para futuros campos de contacto.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Usuario creado"),
+        @ApiResponse(responseCode = "400", description = "Datos inválidos")
+    })
+    @PostMapping("/admin/crear-usuario")
+    public ResponseEntity<Users> crearUsuarioPublico(@Valid @RequestBody Users user) {
         return ResponseEntity.ok(usersService.crear(user));
     }
 

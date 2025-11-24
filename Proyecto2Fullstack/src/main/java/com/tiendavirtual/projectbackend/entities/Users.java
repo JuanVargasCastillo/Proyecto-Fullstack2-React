@@ -53,6 +53,15 @@ public class Users {
     @Column(nullable = false)
     private Boolean activo = true;
 
+    @Column(nullable = true, length = 15)
+    private String telefono;
+
+    @Column(nullable = true, length = 100)
+    private String region;
+
+    @Column(nullable = true, length = 100)
+    private String comuna;
+
     @CreationTimestamp
     @Column(name = "fecha_creacion", updatable = false)
     private LocalDateTime fechaCreacion;
