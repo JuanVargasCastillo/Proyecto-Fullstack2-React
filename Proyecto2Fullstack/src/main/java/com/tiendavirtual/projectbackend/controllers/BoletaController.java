@@ -36,11 +36,13 @@ public class BoletaController {
         r.setId(b.getId());
         r.setCorrelativo(b.getCorrelativo());
         r.setSubtotal(b.getSubtotal());
+        r.setDescuento(b.getDescuento());
         r.setNeto(b.getNeto());
         r.setIva(b.getIva());
         r.setTotal(b.getTotal());
         r.setCostoEnvio(b.getCostoEnvio());
         r.setCreadoEn(b.getCreadoEn());
+        r.setCodigoCupon(b.getCodigoCupon());
         List<BoletaResponse.Detalle> detalles = b.getDetalles().stream().map(d -> {
             BoletaResponse.Detalle rd = new BoletaResponse.Detalle();
             rd.productoId = d.getProducto().getId();

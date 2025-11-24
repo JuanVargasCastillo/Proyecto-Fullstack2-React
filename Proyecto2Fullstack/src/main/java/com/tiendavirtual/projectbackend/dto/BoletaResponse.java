@@ -7,6 +7,7 @@ public class BoletaResponse {
     private Long id;
     private Long correlativo;
     private Double subtotal;
+    private Double descuento;
     private Double neto;
     private Double iva;
     private Double total;
@@ -14,6 +15,7 @@ public class BoletaResponse {
     private Instant creadoEn;
     private List<Detalle> detalles;
     private EnvioInfo envio;
+    private String codigoCupon;
 
     public static class Detalle {
         public Long productoId;
@@ -41,6 +43,8 @@ public class BoletaResponse {
     public void setCorrelativo(Long correlativo) { this.correlativo = correlativo; }
     public Double getSubtotal() { return subtotal; }
     public void setSubtotal(Double subtotal) { this.subtotal = subtotal; }
+    public Double getDescuento() { return descuento; }
+    public void setDescuento(Double descuento) { this.descuento = descuento; }
     public Double getNeto() { return neto; }
     public void setNeto(Double neto) { this.neto = neto; }
     public Double getIva() { return iva; }
@@ -55,4 +59,6 @@ public class BoletaResponse {
     public void setDetalles(List<Detalle> detalles) { this.detalles = detalles; }
     public EnvioInfo getEnvio() { return envio; }
     public void setEnvio(EnvioInfo envio) { this.envio = envio; }
+    public String getCodigoCupon() { return codigoCupon; }
+    public void setCodigoCupon(String codigoCupon) { this.codigoCupon = codigoCupon; }
 }

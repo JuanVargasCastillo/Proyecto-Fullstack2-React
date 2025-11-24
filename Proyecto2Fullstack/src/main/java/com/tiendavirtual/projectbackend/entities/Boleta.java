@@ -31,6 +31,9 @@ public class Boleta {
     private Double subtotal;
 
     @Column(nullable = false)
+    private Double descuento = 0.0;
+
+    @Column(nullable = false)
     private Double neto;
 
     @Column(nullable = false)
@@ -41,6 +44,9 @@ public class Boleta {
 
     @Column(name = "costo_envio")
     private Double costoEnvio;
+
+    @Column(name = "codigo_cupon")
+    private String codigoCupon;
 
     @OneToOne(mappedBy = "boleta", cascade = CascadeType.ALL)
     private Envio envio;
@@ -63,6 +69,9 @@ public class Boleta {
     public Double getSubtotal() { return subtotal; }
     public void setSubtotal(Double subtotal) { this.subtotal = subtotal; }
 
+    public Double getDescuento() { return descuento; }
+    public void setDescuento(Double descuento) { this.descuento = descuento; }
+
     public Double getNeto() { return neto; }
     public void setNeto(Double neto) { this.neto = neto; }
 
@@ -74,6 +83,9 @@ public class Boleta {
 
     public Double getCostoEnvio() { return costoEnvio; }
     public void setCostoEnvio(Double costoEnvio) { this.costoEnvio = costoEnvio; }
+
+    public String getCodigoCupon() { return codigoCupon; }
+    public void setCodigoCupon(String codigoCupon) { this.codigoCupon = codigoCupon; }
 
     public Envio getEnvio() { return envio; }
     public void setEnvio(Envio envio) { this.envio = envio; }

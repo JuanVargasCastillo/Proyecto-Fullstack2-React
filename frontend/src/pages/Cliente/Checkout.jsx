@@ -32,8 +32,22 @@ export default function Checkout() {
   const [comunaError, setComunaError] = useState('')
   const comunas = useMemo(() => REGIONES_Y_COMUNAS[form.region] || [], [form.region])
 
-  const subtotal = Number(cart?.subtotal || 0)
-  const costoEnvio = useMemo(() => (subtotal > 20000 ? 0 : 3000), [subtotal])
+  const items = useMemo(() => (Array.isArray(cart?.items) ? cart.items : []), [cart?.items])
+  const coupon = useMemo(() => String(localStorage.getItem('cupon') || '').toUpperCase(), [])
+  const totalProductos = useMemo(() => (items.reduce((s, i) => s + Number(i?.totalLinea || 0), 0)), [items])
+  const descuento = useMemo(() => {
+    if (coupon === 'CLUB10') return Math.round(totalProductos * 0.10)
+    if (coupon === 'BIENVENIDA5') return Math.round(totalProductos * 0.05)
+    return 0
+  }, [coupon, totalProductos])
+  const subtotalConDescuento = useMemo(() => {
+    const v = totalProductos - descuento
+    return v > 0 ? v : 0
+  }, [totalProductos, descuento])
+  const costoEnvio = useMemo(() => (subtotalConDescuento > 20000 ? 0 : 3000), [subtotalConDescuento])
+  const neto = useMemo(() => (subtotalConDescuento > 0 ? Math.round(subtotalConDescuento / 1.19) : 0), [subtotalConDescuento])
+  const iva = useMemo(() => Math.round(subtotalConDescuento - neto), [subtotalConDescuento, neto])
+  const total = useMemo(() => Math.round(subtotalConDescuento + costoEnvio), [subtotalConDescuento, costoEnvio])
 
   async function pagar() {
     try {
@@ -53,7 +67,7 @@ export default function Checkout() {
         show('Seleccione una comuna válida', 'danger')
         return
       }
-      const b = await generarBoletaConEnvio(form)
+      const b = await generarBoletaConEnvio({ ...form, codigoCupon: coupon || null })
       await empty()
       await refresh()
       navigate(`/boleta/${b.id}`)
@@ -154,12 +168,26 @@ export default function Checkout() {
             <div className="resumen-compra">
               <h5>Resumen</h5>
               <div className="d-flex justify-content-between">
-                <span>Subtotal</span>
-                <span className="precio">${new Intl.NumberFormat('es-CL').format(Number(cart?.subtotal || 0))}</span>
+                <span>Subtotal con descuento</span>
+                <span className="precio">${new Intl.NumberFormat('es-CL').format(subtotalConDescuento)}</span>
+              </div>
+              {descuento > 0 ? (
+                <div className="d-flex justify-content-between mt-1 text-muted small">
+                  <span>Descuento ({coupon})</span>
+                  <span className="precio">-${new Intl.NumberFormat('es-CL').format(descuento)}</span>
+                </div>
+              ) : null}
+              <div className="d-flex justify-content-between mt-1 text-muted small">
+                <span>IVA (19% incluido)</span>
+                <span className="precio">${new Intl.NumberFormat('es-CL').format(iva)}</span>
               </div>
               <div className="d-flex justify-content-between mt-2">
                 <span>Envío</span>
                 <span className="precio">${new Intl.NumberFormat('es-CL').format(costoEnvio)}</span>
+              </div>
+              <div className="d-flex justify-content-between mt-2 fw-bold">
+                <span>Total</span>
+                <span className="precio">${new Intl.NumberFormat('es-CL').format(total)}</span>
               </div>
               <button
                 className="btn btn-pagar mt-3"

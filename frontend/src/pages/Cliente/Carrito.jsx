@@ -52,7 +52,7 @@ export default function Carrito() {
 
   const iva = useMemo(() => {
     const neto = subtotalVisual > 0 ? Math.round(subtotalVisual / 1.19) : 0
-    return subtotalVisual - neto
+    return Math.round(subtotalVisual - neto)
   }, [subtotalVisual])
 
   const cantidadTotal = useMemo(() => {

@@ -54,21 +54,27 @@ public class BoletaService {
             throw new IllegalStateException("El carrito está vacío");
         }
 
-        double subtotal = items.stream()
+        double totalProductos = items.stream()
                 .mapToDouble(i -> i.getPrecioUnitario() * i.getCantidad())
                 .sum();
-        double neto = subtotal;
-        double iva = round2(neto * IVA_RATE);
-        double costoEnvio = subtotal > 20000 ? 0.0 : 3000.0;
-        double total = round0(subtotal + costoEnvio);
+        String codigo = envioReq.getCodigoCupon() != null ? envioReq.getCodigoCupon().trim().toUpperCase() : null;
+        double rate = ("CLUB10".equals(codigo)) ? 0.10 : ("BIENVENIDA5".equals(codigo) ? 0.05 : 0.0);
+        double descuento = round2(totalProductos * rate);
+        double subtotalConDescuento = round2(totalProductos - descuento);
+        double neto = round0(subtotalConDescuento / 1.19);
+        double iva = round0(subtotalConDescuento - neto);
+        double costoEnvio = subtotalConDescuento > 20000 ? 0.0 : 3000.0;
+        double total = round0(subtotalConDescuento + costoEnvio);
 
         Boleta boleta = new Boleta();
         boleta.setUsuario(usuario);
-        boleta.setSubtotal(round2(subtotal));
+        boleta.setSubtotal(subtotalConDescuento);
+        boleta.setDescuento(descuento);
         boleta.setNeto(round2(neto));
         boleta.setIva(iva);
         boleta.setTotal(total);
         boleta.setCostoEnvio(costoEnvio);
+        boleta.setCodigoCupon(codigo);
         boleta.setCreadoEn(Instant.now());
         boleta = boletaRepository.save(boleta);
         // Numeración correlativa simple: igualar al ID autogenerado
@@ -128,16 +134,19 @@ public class BoletaService {
             throw new IllegalStateException("El carrito está vacío");
         }
 
-        double subtotal = items.stream()
+        double totalProductos = items.stream()
                 .mapToDouble(i -> i.getPrecioUnitario() * i.getCantidad())
                 .sum();
-        double neto = subtotal;
-        double iva = round2(neto * IVA_RATE);
-        double total = round0(neto);
+        double descuento = 0.0;
+        double subtotalConDescuento = round2(totalProductos - descuento);
+        double neto = round0(subtotalConDescuento / 1.19);
+        double iva = round0(subtotalConDescuento - neto);
+        double total = round0(subtotalConDescuento);
 
         Boleta boleta = new Boleta();
         boleta.setUsuario(usuario);
-        boleta.setSubtotal(round2(subtotal));
+        boleta.setSubtotal(subtotalConDescuento);
+        boleta.setDescuento(descuento);
         boleta.setNeto(round2(neto));
         boleta.setIva(iva);
         boleta.setTotal(total);

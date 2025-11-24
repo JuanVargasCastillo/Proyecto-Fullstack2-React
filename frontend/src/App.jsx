@@ -7,6 +7,7 @@ import { CartProvider } from './context/CartContext'
 import { SearchProvider } from './context/SearchContext'
 import ClientLayout from './componentes/Cliente/ClientLayout'
 import HomeCliente from './pages/Cliente/HomeCliente'
+import ProductDetail from './pages/Cliente/ProductDetail'
 import Checkout from './pages/Cliente/Checkout'
 import Boleta from './pages/Cliente/Boleta'
 import Historial from './pages/Cliente/Historial'
@@ -43,7 +44,7 @@ function App() {
               {/* Cliente público: Home y detalle accesibles sin sesión */}
               <Route element={<ClientLayout />}> 
                 <Route path="/" element={<HomeCliente />} />
-                <Route path="/producto/:id" element={<div className="container">Detalle de producto</div>} />
+                <Route path="/producto/:id" element={<ProductDetail />} />
                 <Route path="/registro" element={<Registro />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/nosotros" element={<Nosotros />} />
