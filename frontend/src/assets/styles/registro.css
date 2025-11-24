@@ -55,3 +55,24 @@ body {
   color: #f8a9c4;
   font-weight: bold;
 }
+
+.error-text { color: #dc3545; }
+.pwd-weak { color: #dc3545; }
+.pwd-medium { color: #ffc107; }
+.pwd-strong { color: #198754; }
+
+.pwd-feedback { min-height: 22px; }
+.pwd-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.pwd-weak-dot { background-color: #dc3545; }
+.pwd-medium-dot { background-color: #ffc107; }
+.pwd-strong-dot { background-color: #198754; }
+
+.confirm-feedback { min-height: 18px; }
+.match-icon { font-size: 0.95rem; line-height: 1; }
+.match-ok { color: #198754; }
+.match-bad { color: #dc3545; }
