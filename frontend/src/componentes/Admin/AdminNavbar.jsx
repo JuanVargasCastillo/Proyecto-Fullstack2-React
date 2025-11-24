@@ -75,6 +75,10 @@ export default function AdminNavbar({ showAdminTitle = true, showSearch = false 
               <Link className="btn btn-success" to="/registro">Registrarse</Link>
             </>
           )}
+
+          {user ? (
+            <Link className="btn btn-outline-light" to="/historial">Historial de compras</Link>
+          ) : null}
         </div>
       </div>
     </nav>

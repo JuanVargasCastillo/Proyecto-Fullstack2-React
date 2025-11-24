@@ -19,6 +19,7 @@ import com.tiendavirtual.projectbackend.repositories.BoletaRepository;
 import com.tiendavirtual.projectbackend.repositories.CarritoItemRepository;
 import com.tiendavirtual.projectbackend.repositories.CarritoRepository;
 import com.tiendavirtual.projectbackend.repositories.EnvioRepository;
+import com.tiendavirtual.projectbackend.repositories.ProductoRepository;
 
 @Service
 public class BoletaService {
@@ -39,6 +40,9 @@ public class BoletaService {
 
     @Autowired
     private EnvioRepository envioRepository;
+
+    @Autowired
+    private ProductoRepository productoRepository;
 
     @Transactional
     public Boleta generarBoleta(Users usuario, EnvioRequest envioReq) {
@@ -72,6 +76,11 @@ public class BoletaService {
         boleta = boletaRepository.save(boleta);
 
         for (CarritoItem ci : items) {
+            if (ci.getProducto().getStock() < ci.getCantidad()) {
+                throw new IllegalArgumentException("stockInsuficiente: No hay stock suficiente para este producto");
+            }
+            ci.getProducto().setStock(ci.getProducto().getStock() - ci.getCantidad());
+            productoRepository.save(ci.getProducto());
             BoletaDetalle bd = new BoletaDetalle();
             bd.setBoleta(boleta);
             bd.setProducto(ci.getProducto());
@@ -138,6 +147,11 @@ public class BoletaService {
         boleta = boletaRepository.save(boleta);
 
         for (CarritoItem ci : items) {
+            if (ci.getProducto().getStock() < ci.getCantidad()) {
+                throw new IllegalArgumentException("stockInsuficiente: No hay stock suficiente para este producto");
+            }
+            ci.getProducto().setStock(ci.getProducto().getStock() - ci.getCantidad());
+            productoRepository.save(ci.getProducto());
             BoletaDetalle bd = new BoletaDetalle();
             bd.setBoleta(boleta);
             bd.setProducto(ci.getProducto());

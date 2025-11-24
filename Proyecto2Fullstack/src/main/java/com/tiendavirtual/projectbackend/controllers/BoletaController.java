@@ -1,6 +1,7 @@
 package com.tiendavirtual.projectbackend.controllers;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,17 +68,33 @@ public class BoletaController {
     }
 
     @PostMapping("/boletas")
-    public ResponseEntity<BoletaResponse> generarBoleta() {
+    public ResponseEntity<?> generarBoleta() {
         Users usuario = currentUser();
-        Boleta b = boletaService.generarBoleta(usuario);
-        return ResponseEntity.ok(toResponse(b));
+        try {
+            Boleta b = boletaService.generarBoleta(usuario);
+            return ResponseEntity.ok(toResponse(b));
+        } catch (IllegalArgumentException e) {
+            String msg = String.valueOf(e.getMessage());
+            if (msg.startsWith("stockInsuficiente")) {
+                return ResponseEntity.badRequest().body(Map.of("error", "stockInsuficiente", "message", "No hay stock suficiente para este producto"));
+            }
+            throw e;
+        }
     }
 
     @PostMapping("/boletas/envio")
-    public ResponseEntity<BoletaResponse> generarBoletaConEnvio(@jakarta.validation.Valid @RequestBody EnvioRequest envio) {
+    public ResponseEntity<?> generarBoletaConEnvio(@jakarta.validation.Valid @RequestBody EnvioRequest envio) {
         Users usuario = currentUser();
-        Boleta b = boletaService.generarBoleta(usuario, envio);
-        return ResponseEntity.ok(toResponse(b));
+        try {
+            Boleta b = boletaService.generarBoleta(usuario, envio);
+            return ResponseEntity.ok(toResponse(b));
+        } catch (IllegalArgumentException e) {
+            String msg = String.valueOf(e.getMessage());
+            if (msg.startsWith("stockInsuficiente")) {
+                return ResponseEntity.badRequest().body(Map.of("error", "stockInsuficiente", "message", "No hay stock suficiente para este producto"));
+            }
+            throw e;
+        }
     }
 
     @GetMapping("/boletas")

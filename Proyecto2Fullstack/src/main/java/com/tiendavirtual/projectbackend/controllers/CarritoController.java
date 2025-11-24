@@ -1,6 +1,7 @@
 package com.tiendavirtual.projectbackend.controllers;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,22 +64,38 @@ public class CarritoController {
     }
 
     @PostMapping("/items")
-    public ResponseEntity<CartResponse> agregarItem(@Valid @RequestBody AddCartItemRequest req) {
+    public ResponseEntity<?> agregarItem(@Valid @RequestBody AddCartItemRequest req) {
         Users usuario = currentUser();
-        carritoService.agregarItem(usuario, req.getProductoId(), req.getCantidad());
+        try {
+            carritoService.agregarItem(usuario, req.getProductoId(), req.getCantidad());
+        } catch (IllegalArgumentException e) {
+            String msg = String.valueOf(e.getMessage());
+            if (msg.startsWith("stockInsuficiente")) {
+                return ResponseEntity.badRequest().body(Map.of("error", "stockInsuficiente", "message", "No hay stock suficiente para este producto"));
+            }
+            throw e;
+        }
         Carrito carrito = carritoService.getOrCreateActiveCart(usuario);
         return ResponseEntity.ok(toResponse(carrito));
     }
 
     @PutMapping("/items/{id}")
-    public ResponseEntity<CartResponse> actualizarItem(
+    public ResponseEntity<?> actualizarItem(
             @PathVariable Long id,
             @Valid @RequestBody UpdateCartItemRequest req) {
         Users usuario = currentUser();
-        if (req.getCantidad() != null && req.getCantidad() == 0) {
-            carritoService.eliminarItem(usuario, id);
-        } else {
-            carritoService.actualizarCantidad(usuario, id, req.getCantidad());
+        try {
+            if (req.getCantidad() != null && req.getCantidad() == 0) {
+                carritoService.eliminarItem(usuario, id);
+            } else {
+                carritoService.actualizarCantidad(usuario, id, req.getCantidad());
+            }
+        } catch (IllegalArgumentException e) {
+            String msg = String.valueOf(e.getMessage());
+            if (msg.startsWith("stockInsuficiente")) {
+                return ResponseEntity.badRequest().body(Map.of("error", "stockInsuficiente", "message", "No hay stock suficiente para este producto"));
+            }
+            throw e;
         }
         Carrito carrito = carritoService.getOrCreateActiveCart(usuario);
         return ResponseEntity.ok(toResponse(carrito));

@@ -57,7 +57,15 @@ export default function Checkout() {
       await refresh()
       navigate(`/boleta/${b.id}`)
     } catch (e) {
-      show(String(e.message || 'Error al pagar'), 'danger')
+      const status = e?.status
+      const code = e?.code || (String(e?.message || '').includes('stockInsuficiente') ? 'stockInsuficiente' : '')
+      if (status === 400 && code === 'stockInsuficiente') {
+        show('No hay stock disponible para este producto en este momento.', 'warning')
+      } else if (status === 401 || status === 403) {
+        show('Debes iniciar sesión para usar el carrito.', 'warning')
+      } else {
+        show('Error al pagar', 'danger')
+      }
     }
   }
 

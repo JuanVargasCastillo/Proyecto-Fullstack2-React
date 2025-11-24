@@ -53,16 +53,26 @@ public class CarritoService {
         Carrito carrito = getOrCreateActiveCart(usuario);
         Producto producto = productoRepository.findById(productoId)
                 .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado"));
+        if (producto.getStock() == null || producto.getStock() <= 0) {
+            throw new IllegalArgumentException("stockInsuficiente: No hay stock suficiente para este producto");
+        }
 
         Optional<CarritoItem> optItem = carritoItemRepository.findByCarritoIdAndProductoId(carrito.getId(), productoId);
         CarritoItem item;
         if (optItem.isPresent()) {
             item = optItem.get();
-            item.setCantidad(item.getCantidad() + cantidad);
+            int nuevaCantidad = item.getCantidad() + cantidad;
+            if (nuevaCantidad > producto.getStock()) {
+                throw new IllegalArgumentException("stockInsuficiente: No hay stock suficiente para este producto");
+            }
+            item.setCantidad(nuevaCantidad);
         } else {
             item = new CarritoItem();
             item.setCarrito(carrito);
             item.setProducto(producto);
+            if (cantidad > producto.getStock()) {
+                throw new IllegalArgumentException("stockInsuficiente: No hay stock suficiente para este producto");
+            }
             item.setCantidad(cantidad);
             item.setPrecioUnitario(producto.getPrecio().doubleValue());
         }
@@ -85,6 +95,10 @@ public class CarritoService {
         if (cantidad == 0) {
             carritoItemRepository.delete(item);
             return null;
+        }
+        Producto producto = item.getProducto();
+        if (cantidad > producto.getStock()) {
+            throw new IllegalArgumentException("stockInsuficiente: No hay stock suficiente para este producto");
         }
         item.setCantidad(cantidad);
         carrito.setActualizadoEn(Instant.now());
