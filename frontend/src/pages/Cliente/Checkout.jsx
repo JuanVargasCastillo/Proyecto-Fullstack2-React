@@ -39,8 +39,9 @@ export default function Checkout() {
     try {
       const correoOk = emailRegex.test(String(form.correo || '').trim())
       if (!correoOk) {
-        setEmailError('Correo inválido')
-        show('Correo inválido', 'danger')
+        const msg = 'Correo inválido. Solo se aceptan: @gmail.com, @hotmail.com, @duocuc.cl, @duoc.profesor.cl.'
+        setEmailError(msg)
+        show(msg, 'danger')
         return
       }
       if (!form.region) {
@@ -101,7 +102,7 @@ export default function Checkout() {
                       const v = e.target.value
                       setForm((f) => ({ ...f, correo: v }))
                       const ok = emailRegex.test(String(v).trim())
-                      setEmailError(ok ? '' : 'Correo inválido')
+                      setEmailError(ok ? '' : 'Correo inválido. Solo se aceptan: @gmail.com, @hotmail.com, @duocuc.cl, @duoc.profesor.cl.')
                     }}
                   />
                   {emailError ? <div className="invalid-feedback d-block">{emailError}</div> : null}

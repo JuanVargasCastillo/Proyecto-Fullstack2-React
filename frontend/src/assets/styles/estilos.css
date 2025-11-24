@@ -62,3 +62,8 @@
 .btn-notificacion:hover{color:#157347}
 .btn-notificacion .badge{font-size:.6rem}
 #producto-precio{color:#82aa31 !important}
+/* Botones personalizados pastel */
+.btn-rosa-pastel{background-color:#f8a9c4 !important;color:#fff !important;border:none !important;transition:background-color .3s}
+.btn-rosa-pastel:hover{background-color:#f47ba0 !important;color:#fff !important}
+.btn-verde-pastel{background-color:#bfd64f !important;border-color:#bfd64f !important;color:#fff !important}
+.btn-verde-pastel:hover{background-color:#82aa31 !important;border-color:#82aa31 !important;color:#fff !important}

@@ -23,6 +23,7 @@ import Login from './pages/Login/Login'
 import ProtectedRoute from './componentes/shared/ProtectedRoute'
 import { AuthProvider } from './context/AuthContext'
 import { ToastProvider } from './componentes/shared/ToastProvider'
+import HistorialBoletasAdmin from './pages/Admin/HistorialBoletasAdmin'
 
 function App() {
   const location = useLocation()
@@ -63,6 +64,7 @@ function App() {
                 <Route index element={<Dashboard />} />
                 <Route path="inventario" element={<Inventario />} />
                 <Route path="usuarios" element={<Usuarios />} />
+                <Route path="boletas" element={<HistorialBoletasAdmin />} />
               </Route>
 
               {/* No autenticado → /login */}
