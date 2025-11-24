@@ -10,6 +10,7 @@ C:\Users\juanf\Desktop\Proyecto-Fullstack2-React\Proyecto2Fullstack\src\main\jav
 C:\Users\juanf\Desktop\Proyecto-Fullstack2-React\Proyecto2Fullstack\src\main\java\com\tiendavirtual\projectbackend\dto\AddCartItemRequest.java
 C:\Users\juanf\Desktop\Proyecto-Fullstack2-React\Proyecto2Fullstack\src\main\java\com\tiendavirtual\projectbackend\dto\BoletaResponse.java
 C:\Users\juanf\Desktop\Proyecto-Fullstack2-React\Proyecto2Fullstack\src\main\java\com\tiendavirtual\projectbackend\dto\CartResponse.java
+C:\Users\juanf\Desktop\Proyecto-Fullstack2-React\Proyecto2Fullstack\src\main\java\com\tiendavirtual\projectbackend\dto\EnvioRequest.java
 C:\Users\juanf\Desktop\Proyecto-Fullstack2-React\Proyecto2Fullstack\src\main\java\com\tiendavirtual\projectbackend\dto\LoginRequest.java
 C:\Users\juanf\Desktop\Proyecto-Fullstack2-React\Proyecto2Fullstack\src\main\java\com\tiendavirtual\projectbackend\dto\LoginResponse.java
 C:\Users\juanf\Desktop\Proyecto-Fullstack2-React\Proyecto2Fullstack\src\main\java\com\tiendavirtual\projectbackend\dto\LoginResponseDTO.java
@@ -21,6 +22,7 @@ C:\Users\juanf\Desktop\Proyecto-Fullstack2-React\Proyecto2Fullstack\src\main\jav
 C:\Users\juanf\Desktop\Proyecto-Fullstack2-React\Proyecto2Fullstack\src\main\java\com\tiendavirtual\projectbackend\entities\Carrito.java
 C:\Users\juanf\Desktop\Proyecto-Fullstack2-React\Proyecto2Fullstack\src\main\java\com\tiendavirtual\projectbackend\entities\CarritoItem.java
 C:\Users\juanf\Desktop\Proyecto-Fullstack2-React\Proyecto2Fullstack\src\main\java\com\tiendavirtual\projectbackend\entities\Categoria.java
+C:\Users\juanf\Desktop\Proyecto-Fullstack2-React\Proyecto2Fullstack\src\main\java\com\tiendavirtual\projectbackend\entities\Envio.java
 C:\Users\juanf\Desktop\Proyecto-Fullstack2-React\Proyecto2Fullstack\src\main\java\com\tiendavirtual\projectbackend\entities\Producto.java
 C:\Users\juanf\Desktop\Proyecto-Fullstack2-React\Proyecto2Fullstack\src\main\java\com\tiendavirtual\projectbackend\entities\Users.java
 C:\Users\juanf\Desktop\Proyecto-Fullstack2-React\Proyecto2Fullstack\src\main\java\com\tiendavirtual\projectbackend\enums\Rol.java
@@ -31,6 +33,7 @@ C:\Users\juanf\Desktop\Proyecto-Fullstack2-React\Proyecto2Fullstack\src\main\jav
 C:\Users\juanf\Desktop\Proyecto-Fullstack2-React\Proyecto2Fullstack\src\main\java\com\tiendavirtual\projectbackend\repositories\CarritoItemRepository.java
 C:\Users\juanf\Desktop\Proyecto-Fullstack2-React\Proyecto2Fullstack\src\main\java\com\tiendavirtual\projectbackend\repositories\CarritoRepository.java
 C:\Users\juanf\Desktop\Proyecto-Fullstack2-React\Proyecto2Fullstack\src\main\java\com\tiendavirtual\projectbackend\repositories\CategoriaRepositories.java
+C:\Users\juanf\Desktop\Proyecto-Fullstack2-React\Proyecto2Fullstack\src\main\java\com\tiendavirtual\projectbackend\repositories\EnvioRepository.java
 C:\Users\juanf\Desktop\Proyecto-Fullstack2-React\Proyecto2Fullstack\src\main\java\com\tiendavirtual\projectbackend\repositories\ProductoRepositories.java
 C:\Users\juanf\Desktop\Proyecto-Fullstack2-React\Proyecto2Fullstack\src\main\java\com\tiendavirtual\projectbackend\repositories\ProductoRepository.java
 C:\Users\juanf\Desktop\Proyecto-Fullstack2-React\Proyecto2Fullstack\src\main\java\com\tiendavirtual\projectbackend\repositories\UsersRepository.java

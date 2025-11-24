@@ -1,18 +1,64 @@
 import { useCart } from '../../context/CartContext'
 import { useNavigate } from 'react-router-dom'
-import { generarBoleta } from '../../services/boletas'
+import { generarBoletaConEnvio } from '../../services/boletas'
+import { useState, useMemo } from 'react'
+import { useToast } from '../../componentes/shared/ToastProvider'
 
 export default function Checkout() {
   const { cart, empty, refresh } = useCart()
   const navigate = useNavigate()
+  const { show } = useToast()
+
+  const REGIONES_Y_COMUNAS = {
+    'Región Metropolitana': ['Santiago', 'Maipú', 'Ñuñoa', 'Puente Alto', 'Providencia'],
+    'Valparaíso': ['Valparaíso', 'Viña del Mar', 'Quilpué', 'Villa Alemana', 'Concón'],
+    'Biobío': ['Concepción', 'Talcahuano', 'Chiguayante', 'San Pedro de la Paz'],
+    'Antofagasta': ['Antofagasta', 'Calama', 'Tocopilla'],
+  }
+  const emailRegex = /^[^\s@]+@(gmail\.com|duocuc\.cl|profesor\.duoc\.cl)$/
+
+  const [form, setForm] = useState({
+    nombre: '',
+    apellidos: '',
+    correo: '',
+    calle: '',
+    departamento: '',
+    region: '',
+    comuna: '',
+    indicacionesEntrega: ''
+  })
+
+  const [emailError, setEmailError] = useState('')
+  const [comunaError, setComunaError] = useState('')
+  const comunas = useMemo(() => REGIONES_Y_COMUNAS[form.region] || [], [form.region])
+
+  const subtotal = Number(cart?.subtotal || 0)
+  const costoEnvio = useMemo(() => (subtotal > 20000 ? 0 : 3000), [subtotal])
 
   async function pagar() {
     try {
-      const b = await generarBoleta()
+      const correoOk = emailRegex.test(String(form.correo || '').trim())
+      if (!correoOk) {
+        setEmailError('Correo inválido')
+        show('Correo inválido', 'danger')
+        return
+      }
+      if (!form.region) {
+        show('Seleccione una región', 'danger')
+        return
+      }
+      if (!form.comuna || !comunas.includes(form.comuna)) {
+        setComunaError('Seleccione una comuna válida')
+        show('Seleccione una comuna válida', 'danger')
+        return
+      }
+      const b = await generarBoletaConEnvio(form)
       await empty()
       await refresh()
       navigate(`/boleta/${b.id}`)
-    } catch {}
+    } catch (e) {
+      show(String(e.message || 'Error al pagar'), 'danger')
+    }
   }
 
   return (
@@ -28,6 +74,72 @@ export default function Checkout() {
                 <div className="precio">${new Intl.NumberFormat('es-CL').format(Number(item.totalLinea || 0))}</div>
               </div>
             ))}
+            <div className="card p-3 mt-3">
+              <h6 className="mb-2">Dirección de envío</h6>
+              <div className="row g-2">
+                <div className="col-md-6">
+                  <input className="form-control" placeholder="Nombre" value={form.nombre} onChange={(e) => setForm((f) => ({ ...f, nombre: e.target.value }))} />
+                </div>
+                <div className="col-md-6">
+                  <input className="form-control" placeholder="Apellidos" value={form.apellidos} onChange={(e) => setForm((f) => ({ ...f, apellidos: e.target.value }))} />
+                </div>
+                <div className="col-md-6">
+                  <input
+                    type="email"
+                    className={`form-control ${emailError ? 'is-invalid' : ''}`}
+                    placeholder="Correo"
+                    value={form.correo}
+                    onChange={(e) => {
+                      const v = e.target.value
+                      setForm((f) => ({ ...f, correo: v }))
+                      const ok = emailRegex.test(String(v).trim())
+                      setEmailError(ok ? '' : 'Correo inválido')
+                    }}
+                  />
+                  {emailError ? <div className="invalid-feedback d-block">{emailError}</div> : null}
+                </div>
+                <div className="col-md-6">
+                  <input className="form-control" placeholder="Calle" value={form.calle} onChange={(e) => setForm((f) => ({ ...f, calle: e.target.value }))} />
+                </div>
+                <div className="col-md-6">
+                  <input className="form-control" placeholder="Departamento (opcional)" value={form.departamento} onChange={(e) => setForm((f) => ({ ...f, departamento: e.target.value }))} />
+                </div>
+                <div className="col-md-6">
+                  <select
+                    className="form-select"
+                    value={form.region}
+                    onChange={(e) => setForm((f) => ({ ...f, region: e.target.value, comuna: '' }))}
+                  >
+                    <option value="">Seleccione región</option>
+                    {Object.keys(REGIONES_Y_COMUNAS).map((r) => (
+                      <option key={r} value={r}>{r}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="col-md-6">
+                  <select
+                    className={`form-select ${comunaError ? 'is-invalid' : ''}`}
+                    value={form.comuna}
+                    onChange={(e) => {
+                      const v = e.target.value
+                      setForm((f) => ({ ...f, comuna: v }))
+                      const ok = v && comunas.includes(v)
+                      setComunaError(ok ? '' : 'Seleccione una comuna válida')
+                    }}
+                    disabled={!form.region}
+                  >
+                    <option value="">Seleccione comuna</option>
+                    {comunas.map((c) => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                  </select>
+                  {comunaError ? <div className="invalid-feedback d-block">{comunaError}</div> : null}
+                </div>
+                <div className="col-12">
+                  <input className="form-control" placeholder="Indicaciones de entrega (opcional)" value={form.indicacionesEntrega} onChange={(e) => setForm((f) => ({ ...f, indicacionesEntrega: e.target.value }))} />
+                </div>
+              </div>
+            </div>
           </div>
           <div className="col-md-4">
             <div className="resumen-compra">
@@ -36,7 +148,17 @@ export default function Checkout() {
                 <span>Subtotal</span>
                 <span className="precio">${new Intl.NumberFormat('es-CL').format(Number(cart?.subtotal || 0))}</span>
               </div>
-              <button className="btn btn-pagar mt-3" onClick={pagar}>Pagar</button>
+              <div className="d-flex justify-content-between mt-2">
+                <span>Envío</span>
+                <span className="precio">${new Intl.NumberFormat('es-CL').format(costoEnvio)}</span>
+              </div>
+              <button
+                className="btn btn-pagar mt-3"
+                onClick={pagar}
+                disabled={Boolean(emailError) || Boolean(comunaError) || !form.region || !form.comuna}
+              >
+                Pagar
+              </button>
               <button className="btn btn-seguir" onClick={() => navigate('/')}>Seguir comprando</button>
             </div>
           </div>

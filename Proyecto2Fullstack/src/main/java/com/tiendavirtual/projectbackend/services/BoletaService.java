@@ -11,11 +11,14 @@ import com.tiendavirtual.projectbackend.entities.Boleta;
 import com.tiendavirtual.projectbackend.entities.BoletaDetalle;
 import com.tiendavirtual.projectbackend.entities.Carrito;
 import com.tiendavirtual.projectbackend.entities.CarritoItem;
+import com.tiendavirtual.projectbackend.entities.Envio;
 import com.tiendavirtual.projectbackend.entities.Users;
+import com.tiendavirtual.projectbackend.dto.EnvioRequest;
 import com.tiendavirtual.projectbackend.repositories.BoletaDetalleRepository;
 import com.tiendavirtual.projectbackend.repositories.BoletaRepository;
 import com.tiendavirtual.projectbackend.repositories.CarritoItemRepository;
 import com.tiendavirtual.projectbackend.repositories.CarritoRepository;
+import com.tiendavirtual.projectbackend.repositories.EnvioRepository;
 
 @Service
 public class BoletaService {
@@ -34,8 +37,11 @@ public class BoletaService {
     @Autowired
     private BoletaDetalleRepository boletaDetalleRepository;
 
+    @Autowired
+    private EnvioRepository envioRepository;
+
     @Transactional
-    public Boleta generarBoleta(Users usuario) {
+    public Boleta generarBoleta(Users usuario, EnvioRequest envioReq) {
         Carrito carrito = carritoRepository.findByUsuarioAndActivoTrue(usuario)
                 .orElseThrow(() -> new IllegalStateException("No existe carrito activo para el usuario"));
 
@@ -49,7 +55,8 @@ public class BoletaService {
                 .sum();
         double neto = subtotal;
         double iva = round2(neto * IVA_RATE);
-        double total = round2(neto + iva);
+        double costoEnvio = subtotal > 20000 ? 0.0 : 3000.0;
+        double total = round0(subtotal + costoEnvio);
 
         Boleta boleta = new Boleta();
         boleta.setUsuario(usuario);
@@ -57,6 +64,7 @@ public class BoletaService {
         boleta.setNeto(round2(neto));
         boleta.setIva(iva);
         boleta.setTotal(total);
+        boleta.setCostoEnvio(costoEnvio);
         boleta.setCreadoEn(Instant.now());
         boleta = boletaRepository.save(boleta);
         // Numeración correlativa simple: igualar al ID autogenerado
@@ -73,11 +81,75 @@ public class BoletaService {
             boletaDetalleRepository.save(bd);
         }
 
+        Envio envio = new Envio();
+        envio.setBoleta(boleta);
+        envio.setNombre(envioReq.getNombre());
+        envio.setApellidos(envioReq.getApellidos());
+        envio.setCorreo(envioReq.getCorreo());
+        envio.setCalle(envioReq.getCalle());
+        envio.setDepartamento(envioReq.getDepartamento());
+        envio.setRegion(envioReq.getRegion());
+        envio.setComuna(envioReq.getComuna());
+        envio.setIndicacionesEntrega(envioReq.getIndicacionesEntrega());
+        envio.setCostoEnvio(costoEnvio);
+        envioRepository.save(envio);
+        boleta.setEnvio(envio);
+
         // Cerrar carrito activo
         carrito.setActivo(false);
         carritoRepository.save(carrito);
 
         // Crear nuevo carrito vacío activo para el usuario
+        Carrito nuevo = new Carrito();
+        nuevo.setUsuario(usuario);
+        nuevo.setActivo(true);
+        nuevo.setCreadoEn(Instant.now());
+        carritoRepository.save(nuevo);
+
+        return boleta;
+    }
+
+    @Transactional
+    public Boleta generarBoleta(Users usuario) {
+        Carrito carrito = carritoRepository.findByUsuarioAndActivoTrue(usuario)
+                .orElseThrow(() -> new IllegalStateException("No existe carrito activo para el usuario"));
+
+        List<CarritoItem> items = carritoItemRepository.findByCarritoId(carrito.getId());
+        if (items.isEmpty()) {
+            throw new IllegalStateException("El carrito está vacío");
+        }
+
+        double subtotal = items.stream()
+                .mapToDouble(i -> i.getPrecioUnitario() * i.getCantidad())
+                .sum();
+        double neto = subtotal;
+        double iva = round2(neto * IVA_RATE);
+        double total = round0(neto);
+
+        Boleta boleta = new Boleta();
+        boleta.setUsuario(usuario);
+        boleta.setSubtotal(round2(subtotal));
+        boleta.setNeto(round2(neto));
+        boleta.setIva(iva);
+        boleta.setTotal(total);
+        boleta.setCreadoEn(Instant.now());
+        boleta = boletaRepository.save(boleta);
+        boleta.setCorrelativo(boleta.getId());
+        boleta = boletaRepository.save(boleta);
+
+        for (CarritoItem ci : items) {
+            BoletaDetalle bd = new BoletaDetalle();
+            bd.setBoleta(boleta);
+            bd.setProducto(ci.getProducto());
+            bd.setCantidad(ci.getCantidad());
+            bd.setPrecioUnitario(ci.getPrecioUnitario());
+            bd.setTotalLinea(round2(ci.getPrecioUnitario() * ci.getCantidad()));
+            boletaDetalleRepository.save(bd);
+        }
+
+        carrito.setActivo(false);
+        carritoRepository.save(carrito);
+
         Carrito nuevo = new Carrito();
         nuevo.setUsuario(usuario);
         nuevo.setActivo(true);
@@ -108,5 +180,9 @@ public class BoletaService {
 
     private static double round2(double v) {
         return Math.round(v * 100.0) / 100.0;
+    }
+
+    private static double round0(double v) {
+        return Math.round(v);
     }
 }

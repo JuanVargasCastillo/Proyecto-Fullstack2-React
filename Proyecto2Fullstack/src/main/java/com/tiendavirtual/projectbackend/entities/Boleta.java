@@ -39,6 +39,12 @@ public class Boleta {
     @Column(nullable = false)
     private Double total;
 
+    @Column(name = "costo_envio")
+    private Double costoEnvio;
+
+    @OneToOne(mappedBy = "boleta", cascade = CascadeType.ALL)
+    private Envio envio;
+
     @Column(name = "creado_en", nullable = false)
     private Instant creadoEn = Instant.now();
 
@@ -65,6 +71,12 @@ public class Boleta {
 
     public Double getTotal() { return total; }
     public void setTotal(Double total) { this.total = total; }
+
+    public Double getCostoEnvio() { return costoEnvio; }
+    public void setCostoEnvio(Double costoEnvio) { this.costoEnvio = costoEnvio; }
+
+    public Envio getEnvio() { return envio; }
+    public void setEnvio(Envio envio) { this.envio = envio; }
 
     public Instant getCreadoEn() { return creadoEn; }
     public void setCreadoEn(Instant creadoEn) { this.creadoEn = creadoEn; }
