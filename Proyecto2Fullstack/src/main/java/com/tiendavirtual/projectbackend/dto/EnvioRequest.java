@@ -20,6 +20,8 @@ public class EnvioRequest {
   private String comuna;
   private String indicacionesEntrega;
 
+  private String codigoCupon;
+
   public String getNombre() { return nombre; }
   public void setNombre(String nombre) { this.nombre = nombre; }
   public String getApellidos() { return apellidos; }
@@ -36,4 +38,7 @@ public class EnvioRequest {
   public void setComuna(String comuna) { this.comuna = comuna; }
   public String getIndicacionesEntrega() { return indicacionesEntrega; }
   public void setIndicacionesEntrega(String indicacionesEntrega) { this.indicacionesEntrega = indicacionesEntrega; }
+
+  public String getCodigoCupon() { return codigoCupon; }
+  public void setCodigoCupon(String codigoCupon) { this.codigoCupon = codigoCupon; }
 }

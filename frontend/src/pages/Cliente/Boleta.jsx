@@ -20,9 +20,15 @@ export default function Boleta() {
               <h5 className="mb-3">Boleta #{boleta.correlativo}</h5>
               <div className="text-muted mb-2">Fecha de compra: {new Date(boleta.creadoEn).toLocaleDateString('es-CL')}</div>
               <div className="d-flex justify-content-between">
-                <span>Subtotal</span>
+                <span>Subtotal con descuento</span>
                 <span className="precio">${new Intl.NumberFormat('es-CL').format(Number(boleta.subtotal || 0))}</span>
               </div>
+              {Number(boleta.descuento || 0) > 0 ? (
+                <div className="d-flex justify-content-between mt-1 text-muted">
+                  <span>Descuento ({boleta.codigoCupon})</span>
+                  <span className="precio">-${new Intl.NumberFormat('es-CL').format(Number(boleta.descuento || 0))}</span>
+                </div>
+              ) : null}
               <div className="d-flex justify-content-between mt-1">
                 <span>Neto</span>
                 <span className="precio">${new Intl.NumberFormat('es-CL').format(Number(boleta.neto || 0))}</span>

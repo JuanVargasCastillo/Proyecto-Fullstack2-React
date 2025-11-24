@@ -1,4 +1,5 @@
 import { useCart } from '../../context/CartContext'
+import { Link } from 'react-router-dom'
 
 export default function ProductCard({ producto }) {
   const { add } = useCart()
@@ -8,13 +9,17 @@ export default function ProductCard({ producto }) {
 
   return (
     <div className="card h-100">
-      <img src={img} className="card-img-top producto-img" alt={producto?.nombre} />
+      <Link to={`/producto/${producto?.id}`} className="text-decoration-none">
+        <img src={img} className="card-img-top producto-img" alt={producto?.nombre} />
+      </Link>
       <div className="card-body text-center d-flex flex-column align-items-center">
-        <h5 className="card-title">{producto?.nombre}</h5>
+        <Link to={`/producto/${producto?.id}`} className="text-decoration-none">
+          <h5 className="card-title">{producto?.nombre}</h5>
+        </Link>
         <p className="card-text mb-2">${new Intl.NumberFormat('es-CL').format(precio)}</p>
         <div className="d-flex gap-2">
-          <button className="btn btn-sm btn-primary" onClick={() => add(producto.id, 1)}>Agregar</button>
-          <button className="btn btn-sm btn-outline-danger add-fav"><i className="bi bi-heart"></i></button>
+          <button className="btn btn-sm btn-verde-pastel" onClick={() => add(producto.id, 1)}>Agregar</button>
+          <button className="btn btn-sm btn-rosa-pastel add-fav"><i className="bi bi-heart"></i></button>
         </div>
       </div>
     </div>

@@ -67,3 +67,6 @@
 .btn-rosa-pastel:hover{background-color:#f47ba0 !important;color:#fff !important}
 .btn-verde-pastel{background-color:#bfd64f !important;border-color:#bfd64f !important;color:#fff !important}
 .btn-verde-pastel:hover{background-color:#82aa31 !important;border-color:#82aa31 !important;color:#fff !important}
+.producto-detalle .detalle-media{background:#fff;border:1px solid #eee;border-radius:12px;padding:12px}
+.producto-detalle h2{color:#333;font-weight:700}
+.producto-detalle .text-muted{color:#6c757d !important}
