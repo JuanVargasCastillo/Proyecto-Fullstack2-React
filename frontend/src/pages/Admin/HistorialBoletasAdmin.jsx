@@ -86,7 +86,7 @@ export default function HistorialBoletasAdmin() {
                   <td>${new Intl.NumberFormat('es-CL').format(Number(b.costoEnvio || 0))}</td>
                   <td>${new Intl.NumberFormat('es-CL').format(Number(b.total || 0))}</td>
                   <td className="text-end">
-                    <Link className="btn btn-verde-pastel" to={`/boleta/${b.id}`}>Ver detalle</Link>
+                    <Link className="btn btn-verde-pastel" to={`/admin/boleta/${b.id}`}>Ver detalle</Link>
                   </td>
                 </tr>
               )
