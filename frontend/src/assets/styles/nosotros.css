@@ -1,0 +1,15 @@
+body { background-color: #ffffff; }
+.section-nosotros { padding: 60px 0; text-align: center; }
+.logo-nosotros { max-width: 400px; width: 100%; height: auto; margin-bottom: 30px; }
+.text-bunny { color: #82aa31; font-weight: bold; }
+.btn-bunny { background-color: #f8a9c4; color: #fff; border: none; transition: background-color 0.3s; }
+.btn-bunny:hover { background-color: #f47ba0; color: #fff; }
+.section-nosotros p { font-size: 1.1rem; color: #333; }
+.desarrolladores { margin-top: 50px; }
+.dev-card { background-color: #f8f5f7; border-radius: 12px; padding: 20px; text-align: center; transition: transform 0.3s; }
+.dev-card:hover { transform: translateY(-5px); }
+.dev-card img { width: 120px; height: 120px; border-radius: 50%; margin-bottom: 15px; object-fit: cover; }
+.dev-name { font-weight: bold; color: #f8a9c4; font-size: 1.1rem; }
+@media (max-width: 768px) {
+  .logo-nosotros { max-width: 280px; }
+}
