@@ -1,0 +1,29 @@
+.categorias-body { padding-top: 0; }
+.categorias-list .nav-link {
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: #333;
+}
+.categorias-list .nav-link:hover {
+  background-color: #fdbfd3;
+  color: #000;
+  padding-left: 10px;
+  border-radius: 5px;
+}
+.categorias-list i { color: #5a5a5a; }
+.categorias-list .nav-link:hover i { color: #000; }
+
+.offcanvas-body .nav-link {
+  padding: 8px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #333;
+  font-weight: 500;
+  text-decoration: none;
+}
+.offcanvas-body .nav-link:hover {
+  background-color: #fdbfd3;
+  border-radius: 5px;
+  padding-left: 10px;
+}
