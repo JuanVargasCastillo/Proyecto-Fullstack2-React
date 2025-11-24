@@ -85,6 +85,24 @@
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   background-color: var(--gb-white);
 }
+.form-control:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px var(--gb-white) inset;
+  box-shadow: 0 0 0px 1000px var(--gb-white) inset;
+  -webkit-text-fill-color: var(--gb-text);
+  caret-color: var(--gb-text);
+}
+.form-select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px var(--gb-white) inset;
+  -webkit-text-fill-color: var(--gb-text);
+}
+.form-control:-moz-autofill,
+textarea:-moz-autofill,
+select:-moz-autofill {
+  background-color: var(--gb-white) !important;
+  color: var(--gb-text) !important;
+}
 .form-control:focus {
   border-color: var(--gb-pink);
   box-shadow: 0 0 0 3px rgba(248, 169, 196, 0.25);

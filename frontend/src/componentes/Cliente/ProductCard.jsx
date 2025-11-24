@@ -19,7 +19,6 @@ export default function ProductCard({ producto }) {
         <p className="card-text mb-2">${new Intl.NumberFormat('es-CL').format(precio)}</p>
         <div className="d-flex gap-2">
           <button className="btn btn-sm btn-verde-pastel" onClick={() => add(producto.id, 1)}>Agregar</button>
-          <button className="btn btn-sm btn-rosa-pastel add-fav"><i className="bi bi-heart"></i></button>
         </div>
       </div>
     </div>
