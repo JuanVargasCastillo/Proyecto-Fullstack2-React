@@ -18,7 +18,37 @@ export default function Boleta() {
           <div className="card">
             <div className="card-body">
               <h5 className="mb-3">Boleta #{boleta.correlativo}</h5>
-              <div className="mb-2">Total: <strong>${new Intl.NumberFormat('es-CL').format(Number(boleta.total || 0))}</strong></div>
+              <div className="d-flex justify-content-between">
+                <span>Subtotal</span>
+                <span className="precio">${new Intl.NumberFormat('es-CL').format(Number(boleta.subtotal || 0))}</span>
+              </div>
+              <div className="d-flex justify-content-between mt-1">
+                <span>Neto</span>
+                <span className="precio">${new Intl.NumberFormat('es-CL').format(Number(boleta.neto || 0))}</span>
+              </div>
+              <div className="d-flex justify-content-between mt-1">
+                <span>IVA</span>
+                <span className="precio">${new Intl.NumberFormat('es-CL').format(Number(boleta.iva || 0))}</span>
+              </div>
+              <div className="d-flex justify-content-between mt-1">
+                <span>Envío</span>
+                <span className="precio">${new Intl.NumberFormat('es-CL').format(Number(boleta.costoEnvio || 0))}</span>
+              </div>
+              <hr />
+              <div className="d-flex justify-content-between">
+                <span>Total</span>
+                <span className="precio fw-bold">${new Intl.NumberFormat('es-CL').format(Number(boleta.total || 0))}</span>
+              </div>
+              {boleta?.envio ? (
+                <div className="mb-3">
+                  <div className="fw-bold">Dirección de envío</div>
+                  <div className="text-muted">{boleta.envio.nombre} {boleta.envio.apellidos}</div>
+                  <div className="text-muted">{boleta.envio.correo}</div>
+                  <div className="text-muted">{boleta.envio.calle}{boleta.envio.departamento ? `, ${boleta.envio.departamento}` : ''}</div>
+                  <div className="text-muted">{boleta.envio.comuna}, {boleta.envio.region}</div>
+                  {boleta.envio.indicacionesEntrega ? <div className="text-muted">{boleta.envio.indicacionesEntrega}</div> : null}
+                </div>
+              ) : null}
               <ul className="list-unstyled mt-3">
                 {(boleta?.detalles || []).map((d, i) => (
                   <li key={i} className="d-flex justify-content-between">

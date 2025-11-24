@@ -16,6 +16,7 @@ import com.tiendavirtual.projectbackend.entities.BoletaDetalle;
 import com.tiendavirtual.projectbackend.entities.Users;
 import com.tiendavirtual.projectbackend.enums.Rol;
 import com.tiendavirtual.projectbackend.services.BoletaService;
+import com.tiendavirtual.projectbackend.dto.EnvioRequest;
 
 @RestController
 @RequestMapping("/api")
@@ -37,6 +38,7 @@ public class BoletaController {
         r.setNeto(b.getNeto());
         r.setIva(b.getIva());
         r.setTotal(b.getTotal());
+        r.setCostoEnvio(b.getCostoEnvio());
         r.setCreadoEn(b.getCreadoEn());
         List<BoletaResponse.Detalle> detalles = b.getDetalles().stream().map(d -> {
             BoletaResponse.Detalle rd = new BoletaResponse.Detalle();
@@ -48,6 +50,19 @@ public class BoletaController {
             return rd;
         }).collect(Collectors.toList());
         r.setDetalles(detalles);
+        if (b.getEnvio() != null) {
+            BoletaResponse.EnvioInfo ei = new BoletaResponse.EnvioInfo();
+            ei.nombre = b.getEnvio().getNombre();
+            ei.apellidos = b.getEnvio().getApellidos();
+            ei.correo = b.getEnvio().getCorreo();
+            ei.calle = b.getEnvio().getCalle();
+            ei.departamento = b.getEnvio().getDepartamento();
+            ei.region = b.getEnvio().getRegion();
+            ei.comuna = b.getEnvio().getComuna();
+            ei.indicacionesEntrega = b.getEnvio().getIndicacionesEntrega();
+            ei.costoEnvio = b.getEnvio().getCostoEnvio();
+            r.setEnvio(ei);
+        }
         return r;
     }
 
@@ -55,6 +70,13 @@ public class BoletaController {
     public ResponseEntity<BoletaResponse> generarBoleta() {
         Users usuario = currentUser();
         Boleta b = boletaService.generarBoleta(usuario);
+        return ResponseEntity.ok(toResponse(b));
+    }
+
+    @PostMapping("/boletas/envio")
+    public ResponseEntity<BoletaResponse> generarBoletaConEnvio(@jakarta.validation.Valid @RequestBody EnvioRequest envio) {
+        Users usuario = currentUser();
+        Boleta b = boletaService.generarBoleta(usuario, envio);
         return ResponseEntity.ok(toResponse(b));
     }
 

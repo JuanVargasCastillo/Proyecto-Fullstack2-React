@@ -5,6 +5,11 @@ export async function generarBoleta() {
   return data
 }
 
+export async function generarBoletaConEnvio(envio) {
+  const { data } = await api.post('/api/boletas/envio', envio)
+  return data
+}
+
 export async function listarBoletas() {
   const { data } = await api.get('/api/boletas')
   return data
