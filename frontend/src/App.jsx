@@ -56,10 +56,6 @@ function App() {
               <Route element={<ProtectedRoute allowedRoles={["CLIENTE"]}><ClientLayout /></ProtectedRoute>}>
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/historial" element={<Historial />} />
-              </Route>
-
-              {/* Detalle de boleta accesible para CLIENTE y SUPER_ADMIN */}
-              <Route element={<ProtectedRoute allowedRoles={["CLIENTE", "SUPER_ADMIN"]}><ClientLayout /></ProtectedRoute>}>
                 <Route path="/boleta/:id" element={<Boleta />} />
               </Route>
 
@@ -69,6 +65,7 @@ function App() {
                 <Route path="inventario" element={<Inventario />} />
                 <Route path="usuarios" element={<Usuarios />} />
                 <Route path="boletas" element={<HistorialBoletasAdmin />} />
+                <Route path="boleta/:id" element={<Boleta />} />
               </Route>
 
               {/* No autenticado → /login */}
