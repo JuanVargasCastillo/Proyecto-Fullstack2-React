@@ -10,11 +10,11 @@ export default function AdminNavbar({ showAdminTitle = true, showSearch = false 
   const location = useLocation()
 
   const handleLogout = () => {
-    try {
-      localStorage.removeItem('usuarioLogueado')
-      logout && logout()
-    } finally {
-      navigate('/login', { replace: true })
+    logout && logout()
+    if (!showSearch) {
+      window.location.replace('/')
+    } else {
+      navigate('/', { replace: true })
     }
   }
 
@@ -69,7 +69,7 @@ export default function AdminNavbar({ showAdminTitle = true, showSearch = false 
               </>
             ) : (
               <>
-                <Link className="btn btn-outline-primary me-2" to="/login">Iniciar Sesión</Link>
+                <Link className="btn btn-rosa-pastel me-2" to="/login">Iniciar Sesión</Link>
                 <Link className="btn btn-success" to="/registro">Registrarse</Link>
               </>
             )

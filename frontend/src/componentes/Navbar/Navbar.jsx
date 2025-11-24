@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../shared/ToastProvider'
 
 export default function Navbar() {
   const { user, login, logout } = useAuth()
   const { show } = useToast()
+  const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -60,7 +61,7 @@ export default function Navbar() {
           ) : (
             <div className="d-flex align-items-center text-white">
               <span className="me-3">Hola, {user.nombre} ({user.rol})</span>
-              <button className="btn btn-outline-light" onClick={() => { logout(); show('Sesión cerrada', 'success') }}>Salir</button>
+              <button className="btn btn-outline-light" onClick={() => { logout(); show('Sesión cerrada', 'success'); navigate('/', { replace: true }) }}>Salir</button>
             </div>
           )}
         </div>

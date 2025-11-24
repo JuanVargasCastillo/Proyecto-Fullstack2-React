@@ -27,6 +27,7 @@ export function AuthProvider({ children }) {
   function logout() {
     setUser(null)
     localStorage.removeItem('user')
+    try { localStorage.removeItem('usuarioLogueado') } catch {}
   }
 
   const value = { user, login, logout, loading }
