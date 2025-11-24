@@ -55,8 +55,12 @@ function App() {
               {/* Cliente protegido: rutas que requieren sesión CLIENTE */}
               <Route element={<ProtectedRoute allowedRoles={["CLIENTE"]}><ClientLayout /></ProtectedRoute>}>
                 <Route path="/checkout" element={<Checkout />} />
-                <Route path="/boleta/:id" element={<Boleta />} />
                 <Route path="/historial" element={<Historial />} />
+              </Route>
+
+              {/* Detalle de boleta accesible para CLIENTE y SUPER_ADMIN */}
+              <Route element={<ProtectedRoute allowedRoles={["CLIENTE", "SUPER_ADMIN"]}><ClientLayout /></ProtectedRoute>}>
+                <Route path="/boleta/:id" element={<Boleta />} />
               </Route>
 
               {/* Admin protegido por rol */}

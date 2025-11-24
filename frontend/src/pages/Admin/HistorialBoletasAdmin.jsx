@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { listarBoletasAdmin } from '../../services/boletas'
 import { useToast } from '../../componentes/shared/ToastProvider'
 
@@ -7,7 +7,6 @@ export default function HistorialBoletasAdmin() {
   const [boletas, setBoletas] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const navigate = useNavigate()
   const { show } = useToast()
 
   useEffect(() => {
@@ -87,7 +86,7 @@ export default function HistorialBoletasAdmin() {
                   <td>${new Intl.NumberFormat('es-CL').format(Number(b.costoEnvio || 0))}</td>
                   <td>${new Intl.NumberFormat('es-CL').format(Number(b.total || 0))}</td>
                   <td className="text-end">
-                    <button className="btn btn-verde-pastel" onClick={() => navigate(`/boleta/${b.id}`)}>Ver detalle</button>
+                    <Link className="btn btn-verde-pastel" to={`/boleta/${b.id}`}>Ver detalle</Link>
                   </td>
                 </tr>
               )

@@ -55,28 +55,36 @@ export default function AdminNavbar({ showAdminTitle = true, showSearch = false 
           </form>
         ) : null}
 
-        {/* Icono de notificaciones, carrito y acciones de sesión */}
+        {/* Acciones (cliente vs admin) */}
         <div className="d-flex align-items-center gap-2 ms-auto">
-          <button className="btn btn-notificacion position-relative d-none d-sm-inline-flex" type="button" aria-label="Notificaciones">
-            <i className="bi bi-bell"></i>
-            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">3</span>
-          </button>
-
-          <CartButton />
-
-          {user ? (
-            <>
-              <Link className="btn btn-rosa-pastel" to="/historial">Historial de compras</Link>
+          {isClientLayout ? (
+            user ? (
+              <>
+                <CartButton />
+                <Link className="btn btn-rosa-pastel" to="/historial">Historial de compras</Link>
+                <button className="btn btn-cerrar-sesion" onClick={handleLogout}>
+                  <i className="bi bi-box-arrow-right me-1"></i>
+                  Cerrar Sesión
+                </button>
+              </>
+            ) : (
+              <>
+                <Link className="btn btn-outline-primary me-2" to="/login">Iniciar Sesión</Link>
+                <Link className="btn btn-success" to="/registro">Registrarse</Link>
+              </>
+            )
+          ) : (
+            user ? (
               <button className="btn btn-cerrar-sesion" onClick={handleLogout}>
                 <i className="bi bi-box-arrow-right me-1"></i>
                 Cerrar Sesión
               </button>
-            </>
-          ) : (
-            <>
-              <Link className="btn btn-outline-primary me-2" to="/login">Iniciar Sesión</Link>
-              <Link className="btn btn-success" to="/registro">Registrarse</Link>
-            </>
+            ) : (
+              <>
+                <Link className="btn btn-outline-primary me-2" to="/login">Iniciar Sesión</Link>
+                <Link className="btn btn-success" to="/registro">Registrarse</Link>
+              </>
+            )
           )}
         </div>
       </div>
