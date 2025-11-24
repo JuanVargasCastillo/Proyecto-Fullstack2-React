@@ -16,7 +16,7 @@ export default function AdminFooter() {
             <ul className="list-unstyled">
               <li><Link to="/nosotros" className="footer-link">Nosotros</Link></li>
               <li><Link to="/blog" className="footer-link">Blog</Link></li>
-              <li><a href="#" className="footer-link">Contáctanos</a></li>
+              <li><Link to="/contacto" className="footer-link">Contáctanos</Link></li>
             </ul>
           </div>
           <div className="col-md-4 mb-3">

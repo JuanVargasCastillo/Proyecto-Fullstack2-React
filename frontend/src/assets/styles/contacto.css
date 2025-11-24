@@ -1,0 +1,6 @@
+.contacto-container { max-width: 600px; margin: 50px auto; padding: 30px; background-color: #fff; border-radius: 12px; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
+.contacto-container h2 { text-align: center; margin-bottom: 30px; color: #f8a9c4; }
+.contacto-container img { display: block; margin: 0 auto 20px auto; width: 120px; }
+.contacto-container .form-control:focus { border-color: #f8a9c4; box-shadow: 0 0 5px rgba(255,92,141,0.5); }
+.btn-enviar { background-color: #f8a9c4; color: #fff; border: none; width: 100%; transition: background-color 0.3s; }
+.btn-enviar:hover { background-color: #f47ba0; }
