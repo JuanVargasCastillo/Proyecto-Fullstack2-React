@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCart } from '../../context/CartContext'
+import api from '../../services/api'
 import { obtenerProducto } from '../../services/productos'
 
 export default function Carrito() {
@@ -15,7 +16,7 @@ export default function Carrito() {
   const items = useMemo(() => (Array.isArray(cart?.items) ? cart.items : []), [cart?.items])
 
   useEffect(() => {
-    const base = import.meta.env.VITE_API_URL || 'http://localhost:8080'
+    const base = api?.defaults?.baseURL || 'http://localhost:8080'
     const toLoad = items.filter(i => i?.productoId && !images[i.productoId])
     if (!toLoad.length) return
     const load = async () => {

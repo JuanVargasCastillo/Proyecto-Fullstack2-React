@@ -56,8 +56,9 @@ export default function Registro() {
 
   function onEmailChange(v) {
     setEmail(v)
-    const ok = /^[^\s@]+@(gmail\.com|duocuc\.cl|profesor\.duoc\.cl)$/.test(String(v).trim())
-    setEmailError(ok ? '' : 'Solo se permiten correos @gmail.com, @duocuc.cl o @profesor.duoc.cl')
+    const ok = /^[^\s@]+@(gmail\.com|hotmail\.com|duocuc\.cl|duoc\.profesor\.cl)$/.test(String(v).trim())
+    const msg = 'Correo inválido. Solo se aceptan: @gmail.com, @hotmail.com, @duocuc.cl, @duoc.profesor.cl'
+    setEmailError(ok ? '' : msg)
   }
 
   function onTelefonoChange(v) {
@@ -72,9 +73,9 @@ export default function Registro() {
     setErrores('')
     setOkMsg('')
 
-    const emailOk = /^[^\s@]+@(gmail\.com|duocuc\.cl|profesor\.duoc\.cl)$/.test(email.trim())
+    const emailOk = /^[^\s@]+@(gmail\.com|hotmail\.com|duocuc\.cl|duoc\.profesor\.cl)$/.test(email.trim())
     if (!nombre.trim()) { setErrores('El nombre es obligatorio'); return }
-    if (!emailOk) { setErrores('Correo inválido'); return }
+    if (!emailOk) { setErrores('Correo inválido. Solo se aceptan: @gmail.com, @hotmail.com, @duocuc.cl, @duoc.profesor.cl'); return }
     if (!password || password.length < 8) { setErrores('La contraseña debe tener al menos 8 caracteres'); return }
     if (password !== confirm) { setErrores('Las contraseñas no coinciden'); return }
 
